@@ -9,7 +9,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.parse.ParseObject;
+import com.parse.ParseGeoPoint;
+
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,10 +22,19 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        ParseObject testObject = new ParseObject("TestObject");
-        testObject.put("foo", "bar");
-        testObject.saveInBackground();
+        ClientContactInformation testObj = new ClientContactInformation();
+        testObj.setFirstName("john");
+        testObj.setDateOfBirth(new Date());
+        testObj.setOccupation("farmer");
 
+        ParseGeoPoint location = new ParseGeoPoint(40.0,41.0);
+        testObj.setGeoPoint(location);
+        testObj.saveInBackground();
+
+        setFab();
+    }
+
+    private void setFab() {
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
