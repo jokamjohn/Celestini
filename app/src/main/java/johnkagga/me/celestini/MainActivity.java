@@ -1,5 +1,6 @@
 package johnkagga.me.celestini;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -10,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.parse.ParseGeoPoint;
+import com.parse.ParseUser;
 
 import java.util.Date;
 
@@ -22,6 +24,20 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        ParseUser currentUser = ParseUser.getCurrentUser();
+
+        if (currentUser == null) {
+            Intent loginIntent = new Intent(this, LoginActivity.class);
+            loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(loginIntent);
+        }
+
+
+        setFab();
+    }
+
+    private void ClientTestData() {
         ClientContactInformation testObj = new ClientContactInformation();
         testObj.setFirstName("john");
         testObj.setDateOfBirth(new Date());
@@ -30,8 +46,6 @@ public class MainActivity extends AppCompatActivity {
         ParseGeoPoint location = new ParseGeoPoint(40.0,41.0);
         testObj.setGeoPoint(location);
         testObj.saveInBackground();
-
-        setFab();
     }
 
     private void setFab() {
