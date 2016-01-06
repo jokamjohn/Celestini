@@ -54,6 +54,24 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.MainActivity"/>
         </activity>
+        <activity
+            android:name=".ui.HealthCheckQuestionsActivity"
+            android:label="@string/title_activity_health_check_questions"
+            android:parentActivityName=".ui.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="johnkagga.me.celestini.ui.MainActivity"/>
+        </activity>
+        <activity
+            android:name=".ui.StructuredQuestionsActivity"
+            android:label="@string/title_activity_structured_questions"
+            android:parentActivityName=".ui.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="johnkagga.me.celestini.ui.MainActivity"/>
+        </activity>
     </application>
 
 </manifest>
