@@ -6,6 +6,7 @@ import com.parse.Parse;
 import com.parse.ParseObject;
 
 import johnkagga.me.celestini.data.ClientContactInformation;
+import johnkagga.me.celestini.data.HealthCheckQuestions;
 import johnkagga.me.celestini.data.HealthYesNoQuestions;
 
 /**
@@ -23,6 +24,7 @@ public class CelestiniApplication extends Application {
         //Register Parse classes here
         ParseObject.registerSubclass(ClientContactInformation.class);
         ParseObject.registerSubclass(HealthYesNoQuestions.class);
+        ParseObject.registerSubclass(HealthCheckQuestions.class);
 
         //Initialize the Parse SDK
         Parse.initialize(this);
