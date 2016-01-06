@@ -8,4 +8,6 @@
     <string name="app_sub_title">A Cedat Project</string>
     <string name="signup_text">SignUp</string>
     <string name="log_out">LogOut</string>
+    <string name="title_activity_client_contact_info">ClientContactInfoActivity</string>
+    <string name="title_activity_health_yes_no">HealthYesNoActivity</string>
 </resources>
