@@ -50,7 +50,7 @@ public class ClientContactInfoActivityFragment extends Fragment {
     private void ClientTestData() {
         final ClientContactInformation testObj = new ClientContactInformation();
 
-        testObj.setFirstName("Health");
+        testObj.setFirstName("SHOULD MORE WORK");
         testObj.setDateOfBirth(new Date());
         testObj.setOccupation("builder");
 

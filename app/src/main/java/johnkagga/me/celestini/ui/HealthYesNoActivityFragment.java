@@ -16,6 +16,7 @@ import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
 import johnkagga.me.celestini.Constants;
+import johnkagga.me.celestini.Helper;
 import johnkagga.me.celestini.R;
 import johnkagga.me.celestini.data.ClientContactInformation;
 import johnkagga.me.celestini.data.HealthYesNoQuestions;
@@ -43,7 +44,7 @@ public class HealthYesNoActivityFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 testHealthInfo();
-                getIntentAndSetHealthInfo();
+
             }
         });
 
@@ -60,6 +61,7 @@ public class HealthYesNoActivityFragment extends Fragment {
         if (intent != null && intent.hasExtra(Constants.CLIENT_CONTACT_INFO_ID)) {
             String id = intent
                     .getStringExtra(Constants.CLIENT_CONTACT_INFO_ID);
+
             clientId = id;
 
             ParseQuery<ClientContactInformation> query = ClientContactInformation.getQuery();
@@ -83,6 +85,17 @@ public class HealthYesNoActivityFragment extends Fragment {
     }
 
     /**
+     * Start the Health Activity
+     */
+    private void startHealthYesNoActivity() {
+        Intent checkIntent = new Intent(getActivity(),HealthCheckQuestionsActivity.class);
+        checkIntent.putExtra(Constants.CLIENT_CONTACT_INFO_ID,clientId);
+        checkIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        checkIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(checkIntent);
+    }
+
+    /**
      * Test health information
      */
     private void testHealthInfo() {
@@ -93,9 +106,12 @@ public class HealthYesNoActivityFragment extends Fragment {
             @Override
             public void done(ParseException e) {
                 if (e == null) {
-                    String id = mHealthYesNoQuestions.getUuidString();
-                    clientId = id;
-                    Log.v(LOG_TAG, id);
+                    //check intent and set relation
+                    getIntentAndSetHealthInfo();
+                    //start activity
+                    startHealthYesNoActivity();
+
+                    Helper.makeToast(getActivity(),"Successfully saved");
                 } else {
                     Toast.makeText(getActivity(), "error saving", Toast.LENGTH_LONG)
                             .show();

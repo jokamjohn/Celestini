@@ -122,5 +122,15 @@ public class ClientContactInformation extends ParseObject {
         return ParseQuery.getQuery(ClientContactInformation.class);
     }
 
+    public void setHealthCheckInformation(HealthCheckQuestions healthCheckInformation)
+    {
+        put("HealthCQ",healthCheckInformation);
+    }
+
+    public void setStructuredHealthInformation(StructuredQuestions structuredQuestions)
+    {
+        put("StructuredHQ",structuredQuestions);
+    }
+
 
 }
