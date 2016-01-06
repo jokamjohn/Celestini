@@ -4,6 +4,7 @@ import com.parse.ParseClassName;
 import com.parse.ParseObject;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by jokamjohn on 1/6/2016.
@@ -50,4 +51,14 @@ public class HealthCheckQuestions extends ParseObject {
     public List getGestation() {
         return getList("Gestation");
     }
+
+    public void setUuidString() {
+        UUID uuid = UUID.randomUUID();
+        put("Uuid", uuid.toString());
+    }
+
+    public String getUuidString() {
+        return getString("Uuid");
+    }
+
 }
