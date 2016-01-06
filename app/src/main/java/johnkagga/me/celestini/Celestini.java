@@ -19,6 +19,7 @@ public class Celestini extends Application {
 
         //Register Parse classes here
         ParseObject.registerSubclass(ClientContactInformation.class);
+        ParseObject.registerSubclass(HealthYesNoQuestions.class);
 
         //Initialize the Parse SDK
         Parse.initialize(this);

@@ -6,16 +6,22 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final String LOG_TAG = MainActivity.class.getSimpleName();
+    private ParseUser currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,28 +30,49 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        ParseUser currentUser = ParseUser.getCurrentUser();
+        currentUser = ParseUser.getCurrentUser();
 
         if (currentUser == null) {
-            Intent loginIntent = new Intent(this, LoginActivity.class);
-            loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(loginIntent);
+            startLoginActivity();
         }
-
+        else {
+            Log.i(LOG_TAG,currentUser.getUsername());
+        }
 
         setFab();
     }
 
+    /**
+     * Start the Login Activity
+     */
+    private void startLoginActivity() {
+        Intent loginIntent = new Intent(this, LoginActivity.class);
+        loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(loginIntent);
+    }
+
     private void ClientTestData() {
-        ClientContactInformation testObj = new ClientContactInformation();
-        testObj.setFirstName("john");
+        final ClientContactInformation testObj = new ClientContactInformation();
+        testObj.setFirstName("xawa");
         testObj.setDateOfBirth(new Date());
-        testObj.setOccupation("farmer");
+        testObj.setOccupation("builder");
 
         ParseGeoPoint location = new ParseGeoPoint(40.0,41.0);
         testObj.setGeoPoint(location);
-        testObj.saveInBackground();
+        if (currentUser != null){
+            testObj.setCreatedBy(currentUser);
+        }
+        testObj.saveEventually(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null)
+                {
+                    String objectId = testObj.getObjectId();
+                    Log.i(LOG_TAG,objectId);
+                }
+            }
+        });
     }
 
     private void setFab() {
@@ -74,8 +101,13 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id) {
+            case R.id.action_settings:
+                return true;
+            case R.id.action_log_out:
+                ParseUser.logOut();
+                startLoginActivity();
+                break;
         }
 
         return super.onOptionsItemSelected(item);

@@ -7,4 +7,5 @@
     <string name="username_hint">Username</string>
     <string name="app_sub_title">A Cedat Project</string>
     <string name="signup_text">SignUp</string>
+    <string name="log_out">LogOut</string>
 </resources>
