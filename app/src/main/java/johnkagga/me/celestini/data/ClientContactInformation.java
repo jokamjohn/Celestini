@@ -1,4 +1,4 @@
-package johnkagga.me.celestini;
+package johnkagga.me.celestini.data;
 
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
@@ -112,6 +112,10 @@ public class ClientContactInformation extends ParseObject {
 
     public ParseQuery<ClientContactInformation> getCreator() {
         return getQuery().whereEqualTo("CreatedBy", ParseUser.getCurrentUser());
+    }
+
+    public void setHealthInfo(HealthYesNoQuestions healthInfo) {
+        put("HealthYNQ", healthInfo);
     }
 
     public static ParseQuery<ClientContactInformation> getQuery() {

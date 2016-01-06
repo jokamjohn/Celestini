@@ -1,4 +1,4 @@
-package johnkagga.me.celestini;
+package johnkagga.me.celestini.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +12,9 @@ import android.widget.ProgressBar;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
+
+import johnkagga.me.celestini.Helper;
+import johnkagga.me.celestini.R;
 
 public class LoginActivity extends AppCompatActivity {
 

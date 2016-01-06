@@ -6,8 +6,16 @@
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:paddingTop="@dimen/activity_vertical_margin"
-                tools:context="johnkagga.me.celestini.ClientContactInfoActivityFragment"
+                tools:context=".ui.ClientContactInfoActivityFragment"
                 tools:showIn="@layout/activity_client_contact_info">
 
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Button"
+        android:id="@+id/button"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="169dp"/>
 </RelativeLayout>

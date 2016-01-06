@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
-        android:name=".Celestini"
+        android:name=".CelestiniApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -22,7 +22,7 @@
             android:value="EYAc4sieVEIbey6jRmLoKyP9NY5jehcI76fyftie"/>
 
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -32,27 +32,27 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name=".ui.LoginActivity"
             android:label="@string/title_activity_login"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".ClientContactInfoActivity"
+            android:name=".ui.ClientContactInfoActivity"
             android:label="@string/title_activity_client_contact_info"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".ui.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="johnkagga.me.celestini.MainActivity"/>
+                android:value=".ui.MainActivity"/>
         </activity>
         <activity
-            android:name=".HealthYesNoActivity"
+            android:name=".ui.HealthYesNoActivity"
             android:label="@string/title_activity_health_yes_no"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".ui.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="johnkagga.me.celestini.MainActivity"/>
+                android:value=".ui.MainActivity"/>
         </activity>
     </application>
 

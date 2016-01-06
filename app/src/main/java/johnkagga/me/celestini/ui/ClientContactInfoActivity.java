@@ -1,4 +1,4 @@
-package johnkagga.me.celestini;
+package johnkagga.me.celestini.ui;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -7,7 +7,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import johnkagga.me.celestini.R;
+
 public class ClientContactInfoActivity extends AppCompatActivity {
+
+    private static final String LOG_TAG = ClientContactInfoActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,6 +22,8 @@ public class ClientContactInfoActivity extends AppCompatActivity {
 
         setFab();
     }
+
+
 
     private void setFab() {
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);

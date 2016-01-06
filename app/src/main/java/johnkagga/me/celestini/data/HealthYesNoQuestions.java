@@ -1,4 +1,4 @@
-package johnkagga.me.celestini;
+package johnkagga.me.celestini.data;
 
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
@@ -19,14 +19,6 @@ public class HealthYesNoQuestions extends ParseObject {
 
     public String getUuidString() {
         return getString("Uuid");
-    }
-
-    public void setSync(boolean isSynced) {
-        put("isSynced", isSynced);
-    }
-
-    public boolean isSynced() {
-        return getBoolean("isSynced");
     }
 
     public void setHistoryHypertension(String historyHypertension) {
@@ -83,11 +75,6 @@ public class HealthYesNoQuestions extends ParseObject {
 
     public String getSickleCell() {
         return getString("SickleCell");
-    }
-
-    public void setOwner(ClientContactInformation contactInformation)
-    {
-        put("InfoOwner",contactInformation);
     }
 
     public static ParseQuery<HealthYesNoQuestions> getQuery()

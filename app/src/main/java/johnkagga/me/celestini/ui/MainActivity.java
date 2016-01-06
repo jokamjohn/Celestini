@@ -1,4 +1,4 @@
-package johnkagga.me.celestini;
+package johnkagga.me.celestini.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,12 +11,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.parse.ParseException;
-import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
-import java.util.Date;
+import johnkagga.me.celestini.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -52,29 +49,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(loginIntent);
     }
 
-    private void ClientTestData() {
-        final ClientContactInformation testObj = new ClientContactInformation();
-        testObj.setFirstName("xawa");
-        testObj.setDateOfBirth(new Date());
-        testObj.setOccupation("builder");
-
-        ParseGeoPoint location = new ParseGeoPoint(40.0,41.0);
-        testObj.setGeoPoint(location);
-        if (currentUser != null){
-            testObj.setCreatedBy(currentUser);
-        }
-        testObj.saveEventually(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e == null)
-                {
-                    String objectId = testObj.getObjectId();
-                    Log.i(LOG_TAG,objectId);
-                }
-            }
-        });
-    }
-
     private void setFab() {
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -103,7 +77,9 @@ public class MainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         switch (id) {
             case R.id.action_settings:
-                return true;
+                Intent intent = new Intent(this,ClientContactInfoActivity.class);
+                startActivity(intent);
+                break;
             case R.id.action_log_out:
                 ParseUser.logOut();
                 startLoginActivity();
