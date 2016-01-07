@@ -25,11 +25,11 @@
     <include layout="@layout/content_client_contact_info"/>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/client_info_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_dialog_email"/>
+        android:src="@drawable/ic_send_white_24dp"/>
 
 </android.support.design.widget.CoordinatorLayout>

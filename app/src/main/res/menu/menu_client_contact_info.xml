@@ -7,4 +7,13 @@
         android:orderInCategory="100"
         android:title="@string/action_settings"
         app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_sync"
+        android:orderInCategory="99"
+        android:title="Sync"
+        android:icon="@drawable/ic_sync_white_36dp"
+        app:showAsAction="always"/>
+
+
 </menu>

@@ -89,6 +89,16 @@ public class ClientContactInformation extends ParseObject {
         return getParseGeoPoint("GeoLocation");
     }
 
+    public void setDistrict(String district)
+    {
+        put("District",district);
+    }
+
+    public void setVillage(String village)
+    {
+        put("Village",village);
+    }
+
     public void setCreatedBy(ParseUser user) {
         put("CreatedBy", user);
     }
