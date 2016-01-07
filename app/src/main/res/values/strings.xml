@@ -8,8 +8,13 @@
     <string name="app_sub_title">A Cedat Project</string>
     <string name="signup_text">SignUp</string>
     <string name="log_out">LogOut</string>
-    <string name="title_activity_client_contact_info">ClientContactInfoActivity</string>
-    <string name="title_activity_health_yes_no">HealthYesNoActivity</string>
-    <string name="title_activity_health_check_questions">HealthCheckQuestionsActivity</string>
-    <string name="title_activity_structured_questions">StructuredQuestionsActivity</string>
+    <string name="title_activity_client_contact_info">Client Contact</string>
+    <string name="title_activity_health_yes_no">Health Check 1</string>
+    <string name="title_activity_health_check_questions">Health Check 2</string>
+    <string name="title_activity_structured_questions">Health Check 3</string>
+    <string-array name="camera_options">
+        <item>Take photo</item>
+        <item>Choose photo</item>
+    </string-array>
+
 </resources>

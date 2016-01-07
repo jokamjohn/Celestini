@@ -1,6 +1,9 @@
 package johnkagga.me.celestini.ui;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -10,12 +13,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.parse.FindCallback;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -31,10 +36,12 @@ import johnkagga.me.celestini.data.ClientContactInformation;
 public class ClientContactInfoActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = ClientContactInfoActivity.class.getSimpleName();
+    private static final int CHOOSE_PHOTO = 0;
     private String clientId;
 
     private EditText mFirstName;
     private EditText mLastName;
+    private ImageView mProfilePic;
     private EditText mPhoneNumber;
     private EditText mAltPhoneNumber;
     private EditText mDOB;
@@ -44,6 +51,25 @@ public class ClientContactInfoActivity extends AppCompatActivity {
     private EditText mDistrict;
     private EditText mLatitude;
     private EditText mLongitude;
+
+    private DialogInterface.OnClickListener mListener = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            switch (which) {
+                case 0://Take photo
+                    break;
+
+                case 1://Choose image
+                    Intent chooseImageIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                    chooseImageIntent.setType("image/*");
+                    startActivityForResult(chooseImageIntent, CHOOSE_PHOTO);
+                    break;
+            }
+
+        }
+    };
+
+    private Uri mMediaUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,11 +188,26 @@ public class ClientContactInfoActivity extends AppCompatActivity {
         mDistrict = (EditText) findViewById(R.id.district);
         mLatitude = (EditText) findViewById(R.id.latitude);
         mLongitude = (EditText) findViewById(R.id.longitude);
+        mProfilePic = (ImageView) findViewById(R.id.profile_image);
     }
 
-
-    private void setFab() {
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == CHOOSE_PHOTO) {
+                if (data == null)
+                {
+                    Helper.makeToast(this,"Sorry there was an error");
+                }
+                else {
+                    //set the uri of the image
+                    mMediaUri = data.getData();
+                    Picasso.with(this).load(mMediaUri.toString()).into(mProfilePic);
+                    Log.v(LOG_TAG,"Image uri: " + mMediaUri);
+                }
+            }
+        }
     }
 
     @Override
@@ -187,9 +228,24 @@ public class ClientContactInfoActivity extends AppCompatActivity {
             case R.id.action_sync:
                 syncData();
                 break;
+            case R.id.action_camera:
+                showPictureDialog();
+                break;
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Show the dialog to choose whether
+     * to Take a photo or to choose
+     * from the Gallery
+     */
+    private void showPictureDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setItems(R.array.camera_options, mListener);
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     /**
