@@ -27,58 +27,44 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="4">
-
-            <LinearLayout
+            android:orientation="vertical"
+            >
+            <EditText
+                android:id="@+id/first_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:orientation="vertical">
+                android:ems="10"
+                android:hint="First Name"
+                android:inputType="textPersonName"
+                android:singleLine="true"/>
 
-                <EditText
-                    android:id="@+id/first_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="First Name"
-                    android:inputType="textPersonName"
-                    android:singleLine="true"/>
-
-                <EditText
-                    android:id="@+id/last_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Last Name"
-                    android:inputType="textPersonName"
-                    android:singleLine="true"/>
-
-                <EditText
-                    android:id="@+id/phone_number"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Phone Number"
-                    android:inputType="phone"
-                    android:singleLine="true"/>
-
-                <EditText
-                    android:id="@+id/alt_phone_number"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Alt Phone Number"
-                    android:inputType="phone"/>
-            </LinearLayout>
-
-            <ImageView
-                android:id="@+id/profile_image"
+            <EditText
+                android:id="@+id/last_name"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:contentDescription="Profile Image"
-                android:src="@mipmap/ic_launcher"/>
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Last Name"
+                android:inputType="textPersonName"
+                android:singleLine="true"/>
+
+            <EditText
+                android:id="@+id/phone_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Phone Number"
+                android:inputType="phone"
+                android:singleLine="true"/>
+
+            <EditText
+                android:id="@+id/alt_phone_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Alt Phone Number"
+                android:inputType="phone"/>
+
+
         </LinearLayout>
 
         <LinearLayout

@@ -1,7 +1,6 @@
 package johnkagga.me.celestini.data;
 
 import com.parse.ParseClassName;
-import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -73,14 +72,6 @@ public class ClientContactInformation extends ParseObject {
         return getString("AltPhoneNumber");
     }
 
-    public void setImage(ParseFile imageFile) {
-        put("Image", imageFile);
-    }
-
-    public ParseFile getImage() {
-        return getParseFile("Image");
-    }
-
     public void setGeoPoint(ParseGeoPoint geoPoint) {
         put("GeoLocation", geoPoint);
     }
@@ -141,6 +132,5 @@ public class ClientContactInformation extends ParseObject {
     {
         put("StructuredHQ",structuredQuestions);
     }
-
 
 }

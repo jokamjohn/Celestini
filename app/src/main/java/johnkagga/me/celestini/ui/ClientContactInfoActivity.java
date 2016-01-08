@@ -1,9 +1,6 @@
 package johnkagga.me.celestini.ui;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -13,14 +10,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 
 import com.parse.FindCallback;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
-import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -36,12 +31,10 @@ import johnkagga.me.celestini.data.ClientContactInformation;
 public class ClientContactInfoActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = ClientContactInfoActivity.class.getSimpleName();
-    private static final int CHOOSE_PHOTO = 0;
     private String clientId;
 
     private EditText mFirstName;
     private EditText mLastName;
-    private ImageView mProfilePic;
     private EditText mPhoneNumber;
     private EditText mAltPhoneNumber;
     private EditText mDOB;
@@ -52,25 +45,6 @@ public class ClientContactInfoActivity extends AppCompatActivity {
     private EditText mLatitude;
     private EditText mLongitude;
 
-    private DialogInterface.OnClickListener mListener = new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            switch (which) {
-                case 0://Take photo
-                    break;
-
-                case 1://Choose image
-                    Intent chooseImageIntent = new Intent(Intent.ACTION_GET_CONTENT);
-                    chooseImageIntent.setType("image/*");
-                    startActivityForResult(chooseImageIntent, CHOOSE_PHOTO);
-                    break;
-            }
-
-        }
-    };
-
-    private Uri mMediaUri;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,40 +54,44 @@ public class ClientContactInfoActivity extends AppCompatActivity {
 
         initializeScreen();
 
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.client_info_fab);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
+
+                //Get the user input data
                 final String firstName = mFirstName.getText().toString().trim();
                 final String lastName = mLastName.getText().toString().trim();
                 final String phoneNumber = mPhoneNumber.getText().toString().trim();
                 final String altPhoneNumber = mAltPhoneNumber.getText().toString().trim();
-                //Formatting the date
-                DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-                formatter.setLenient(false);
-                Date dateOfBirth = new Date();
-
-                try {
-                    String date_to_format = mDOB.getText().toString().trim();
-                    dateOfBirth = formatter.parse(date_to_format);
-
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-
                 final String tribe = mTribe.getText().toString().trim();
                 final String occupation = mOccupation.getText().toString().trim();
                 final String village = mVillage.getText().toString().trim();
                 final String district = mDistrict.getText().toString().trim();
                 String lat = mLatitude.getText().toString().trim();
                 String log = mLongitude.getText().toString().trim();
+                //Formatting the date
+                DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+                formatter.setLenient(false);
+                Date dateOfBirth = new Date();
+                String date_to_format = "";
+                try {
+                    date_to_format = mDOB.getText().toString().trim();
+                    dateOfBirth = formatter.parse(date_to_format);
 
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 final Date finalDateOfBirth = dateOfBirth;
-                if (firstName.isEmpty() || lastName.isEmpty()) {
-                    Helper.alertDialog(ClientContactInfoActivity.this, "Try Again", "Please enter the First and Last name");
+
+                //Store the User input in the Parse LocalDataStore
+                if (firstName.isEmpty() || lastName.isEmpty() || date_to_format.isEmpty()) {
+
+                    Helper.alertDialog(ClientContactInfoActivity.this,
+                            "Try Again", "Please enter the First and Last name and Date");
                 } else {
+
                     final ClientContactInformation contactInformation = new ClientContactInformation();
                     contactInformation.setUuidString();
                     contactInformation.setFirstName(firstName);
@@ -127,6 +105,7 @@ public class ClientContactInfoActivity extends AppCompatActivity {
                     contactInformation.setDistrict(district);
                     if (lat.isEmpty() || log.isEmpty()) {
                         //latitude and Longitude not set
+                        Log.v(LOG_TAG, "No Geopoints");
                     } else {
                         double latitude = Double.parseDouble(lat);
                         double longitude = Double.parseDouble(log);
@@ -135,17 +114,19 @@ public class ClientContactInfoActivity extends AppCompatActivity {
                     }
                     contactInformation.setSync(false);
                     contactInformation.setCreatedBy(ParseUser.getCurrentUser());
-
+                    //Pin in the Parse LocalDataStore
                     contactInformation.pinInBackground(Constants.INFO_SAVE_LABEL, new SaveCallback() {
                         @Override
                         public void done(com.parse.ParseException e) {
                             if (e == null) {
+
                                 //If no error get the Uuid
-                                String Uuid = contactInformation.getUuidString();
-                                clientId = Uuid;
+                                clientId = contactInformation.getUuidString();
                                 Log.v(LOG_TAG, "clientId" + clientId);
+
                                 Helper.makeToast(ClientContactInfoActivity.this,
                                         "Client Info saved successfully");
+
                                 startHealthYNActivity();
                             } else {
                                 Helper.makeToast(ClientContactInfoActivity.this,
@@ -158,6 +139,7 @@ public class ClientContactInfoActivity extends AppCompatActivity {
 
             }
         });
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
@@ -188,27 +170,9 @@ public class ClientContactInfoActivity extends AppCompatActivity {
         mDistrict = (EditText) findViewById(R.id.district);
         mLatitude = (EditText) findViewById(R.id.latitude);
         mLongitude = (EditText) findViewById(R.id.longitude);
-        mProfilePic = (ImageView) findViewById(R.id.profile_image);
+
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            if (requestCode == CHOOSE_PHOTO) {
-                if (data == null)
-                {
-                    Helper.makeToast(this,"Sorry there was an error");
-                }
-                else {
-                    //set the uri of the image
-                    mMediaUri = data.getData();
-                    Picasso.with(this).load(mMediaUri.toString()).into(mProfilePic);
-                    Log.v(LOG_TAG,"Image uri: " + mMediaUri);
-                }
-            }
-        }
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -228,28 +192,13 @@ public class ClientContactInfoActivity extends AppCompatActivity {
             case R.id.action_sync:
                 syncData();
                 break;
-            case R.id.action_camera:
-                showPictureDialog();
-                break;
-
         }
         return super.onOptionsItemSelected(item);
     }
 
     /**
-     * Show the dialog to choose whether
-     * to Take a photo or to choose
-     * from the Gallery
-     */
-    private void showPictureDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setItems(R.array.camera_options, mListener);
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
-
-    /**
-     * Sync the data to Parse.com
+     * Sync the data to Parse.com Or redirect to the Login Screen if
+     * there is no ParseUser.
      */
     private void syncData() {
         if (Helper.isOnline(this)) {
@@ -285,7 +234,6 @@ public class ClientContactInfoActivity extends AppCompatActivity {
                         } else {
                             Helper.makeToast(ClientContactInfoActivity.this, "Error syncing: " + e.getMessage());
                         }
-
                     }
                 });
             } else {

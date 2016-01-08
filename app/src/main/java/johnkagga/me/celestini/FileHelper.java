@@ -28,7 +28,7 @@ public class FileHelper {
         	try {
         		inStream = context.getContentResolver().openInputStream(uri);
         		outStream = new ByteArrayOutputStream();
-            
+            	Log.v(LOG_TAG,"Bytes running");
         		byte[] bytesFromFile = new byte[1024*1024]; // buffer size (1 MB)
 				assert inStream != null;
 				int bytesRead = inStream.read(bytesFromFile);
@@ -82,27 +82,9 @@ public class FileHelper {
 		return reducedData;
 	}
 
-	public static String getFileName(Context context, Uri uri, String fileType) {
+	public static String getFileName() {
 		String fileName = "uploaded_file.";
-		
-		if (fileType.equals(Constants.IMAGE_TYPE)) {
-			fileName += "png";
-		}
-		else {
-			// For video, we want to get the actual file extension
-			if (uri.getScheme().equals("content")) {
-				// do it using the mime type
-				String mimeType = context.getContentResolver().getType(uri);
-				assert mimeType != null;
-				int slashIndex = mimeType.indexOf("/");
-				String fileExtension = mimeType.substring(slashIndex + 1);
-				fileName += fileExtension;
-			}
-			else {
-				fileName = uri.getLastPathSegment();
-			}
-		}
-		
+		fileName += "png";
 		return fileName;
 	}
 }
