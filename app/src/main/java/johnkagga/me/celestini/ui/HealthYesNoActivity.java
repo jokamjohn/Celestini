@@ -65,6 +65,8 @@ public class HealthYesNoActivity extends AppCompatActivity {
     private HealthYesNoQuestions mHealthYesNoQuestions;
     private ClientContactInformation mContactInformation;
 
+    private String clientId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,7 +79,9 @@ public class HealthYesNoActivity extends AppCompatActivity {
     }
 
     /**
-     * Set the Fab
+     * This method gets the id of the selected RadioButton, then gets the text
+     * associated with it and finally saves the data into the Health
+     * Question Object.
      */
     private void setTheFab() {
         fab.setOnClickListener(new View.OnClickListener() {
@@ -149,14 +153,16 @@ public class HealthYesNoActivity extends AppCompatActivity {
     }
 
     /**
-     * Get the Client contact information Uuid
-     * and set the Health information
+     * This method receives a Uuid of the Client Information from the incoming Intent
+     * and queries for the object from the data store. After the Health Object
+     * is saved into the Client Information Object as a Parse relation
+     * Pointer.
      */
     private void getIntentAndSetHealthInfo() {
         Intent intent = getIntent();
 
         if (intent != null && intent.hasExtra(Constants.CLIENT_CONTACT_INFO_ID)) {
-            String clientId = intent.getStringExtra(Constants.CLIENT_CONTACT_INFO_ID);
+            clientId = intent.getStringExtra(Constants.CLIENT_CONTACT_INFO_ID);
             Log.v(LOG_TAG, "Client Id: " + clientId);
             //Query for the ClientInformation Object and save the Health Object to it.
             ParseQuery<ClientContactInformation> query = ClientContactInformation.getQuery();
@@ -167,9 +173,10 @@ public class HealthYesNoActivity extends AppCompatActivity {
                 public void done(ClientContactInformation clientInfo, ParseException e) {
                     if (e == null) {
                         //Attach the Health Object to the returned Client Object
+                        //and start an intent when done.
                         mContactInformation = clientInfo;
                         mContactInformation.setHealthInfo(mHealthYesNoQuestions);
-                        Helper.makeToast(HealthYesNoActivity.this,"Done making relationship");
+                        startHealthYesNoActivity();
                     } else {
                         //There was a problem getting the object
                         Log.e(LOG_TAG, e.getMessage());
@@ -199,7 +206,9 @@ public class HealthYesNoActivity extends AppCompatActivity {
     }
 
     /**
-     * Sync the data to Parse.com
+     * This method queries for all the data saved in the Parse LocalDataStore
+     * for all the objects pinned with Constants.INFO_SAVE_LABEL. And
+     * then saves the data to Parse.com and unpins the data.
      */
     private void syncData() {
         if (Helper.isOnline(this)) {
@@ -251,4 +260,17 @@ public class HealthYesNoActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * This method makes an Intent to the Health Question Activity, it also sets
+     * the intent extra to the clientId of the Client Information Activity
+     * and also add Flags so that the user does not go back to the
+     * previous activity but rather the Main Activity.
+     */
+    private void startHealthYesNoActivity() {
+        Intent checkIntent = new Intent(this, HealthCheckQuestionsActivity.class);
+        checkIntent.putExtra(Constants.CLIENT_CONTACT_INFO_ID, clientId);
+        checkIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        checkIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(checkIntent);
+    }
 }
