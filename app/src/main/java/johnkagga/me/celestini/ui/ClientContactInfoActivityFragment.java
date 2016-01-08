@@ -14,7 +14,6 @@ import johnkagga.me.celestini.R;
 public class ClientContactInfoActivityFragment extends Fragment {
 
     private static final String LOG_TAG = ClientContactInfoActivityFragment.class.getSimpleName();
-    private String clientId;
 
     public ClientContactInfoActivityFragment() {
     }

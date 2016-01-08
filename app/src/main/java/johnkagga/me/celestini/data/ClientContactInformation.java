@@ -116,7 +116,7 @@ public class ClientContactInformation extends ParseObject {
     }
 
     public void setHealthInfo(HealthYesNoQuestions healthInfo) {
-        put("HealthYNQ", healthInfo);
+        put("HealthYesNoQuestions", healthInfo);
     }
 
     public static ParseQuery<ClientContactInformation> getQuery() {

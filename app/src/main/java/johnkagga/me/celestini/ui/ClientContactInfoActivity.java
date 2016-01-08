@@ -150,7 +150,7 @@ public class ClientContactInfoActivity extends AppCompatActivity {
      */
     private void startHealthYNActivity() {
         Intent intent = new Intent(ClientContactInfoActivity.this,
-                HealthCheckQuestionsActivity.class);
+                HealthYesNoActivity.class);
         intent.putExtra(Constants.CLIENT_CONTACT_INFO_ID, clientId);
         startActivity(intent);
     }

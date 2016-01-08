@@ -3,15 +3,18 @@ package johnkagga.me.celestini.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -19,14 +22,48 @@ import com.parse.SaveCallback;
 
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import johnkagga.me.celestini.Constants;
 import johnkagga.me.celestini.Helper;
 import johnkagga.me.celestini.R;
 import johnkagga.me.celestini.data.ClientContactInformation;
+import johnkagga.me.celestini.data.HealthYesNoQuestions;
 
 public class HealthYesNoActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = HealthYesNoActivity.class.getSimpleName();
+
+    @Bind(R.id.hyper_history_group)
+    RadioGroup mHyperHistoryGroup;
+    @Bind(R.id.cesarean_group)
+    RadioGroup mCesareanGroup;
+    @Bind(R.id.diabetic_group)
+    RadioGroup mDiabeticGroup;
+    @Bind(R.id.chronic_group)
+    RadioGroup mChronicRenalGroup;
+    @Bind(R.id.thyroid_group)
+    RadioGroup mThyroidGroup;
+    @Bind(R.id.sickle_cell_group)
+    RadioGroup mSickleCellGroup;
+    @Bind(R.id.hypertensive_before_preg_group)
+    RadioGroup mHyperBeforePreg;
+    @Bind(R.id.multiple_gestationgroup)
+    RadioGroup mGestationGroup;
+    @Bind(R.id.fab)
+    FloatingActionButton fab;
+
+    private RadioButton mHyperButton;
+    private RadioButton mCesareanButton;
+    private RadioButton mDiabeticButton;
+    private RadioButton mChronicButton;
+    private RadioButton mThyroidButton;
+    private RadioButton mSickleButton;
+    private RadioButton mHyperBefore;
+    private RadioButton mGestationButton;
+
+    private HealthYesNoQuestions mHealthYesNoQuestions;
+    private ClientContactInformation mContactInformation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,16 +71,116 @@ public class HealthYesNoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_health_yes_no);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        ButterKnife.bind(this);
+        setTheFab();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+    /**
+     * Set the Fab
+     */
+    private void setTheFab() {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                //Get the id of the selected radio button from the Radio Group
+                //find the radio button by the selected id
+                int hyperHistoryId = mHyperHistoryGroup.getCheckedRadioButtonId();
+                mHyperButton = (RadioButton) findViewById(hyperHistoryId);
+
+                int cesareanId = mCesareanGroup.getCheckedRadioButtonId();
+                mCesareanButton = (RadioButton) findViewById(cesareanId);
+
+                int diabeticId = mDiabeticGroup.getCheckedRadioButtonId();
+                mDiabeticButton = (RadioButton) findViewById(diabeticId);
+
+                int chronicId = mChronicRenalGroup.getCheckedRadioButtonId();
+                mChronicButton = (RadioButton) findViewById(chronicId);
+
+                int thyriodId = mThyroidGroup.getCheckedRadioButtonId();
+                mThyroidButton = (RadioButton) findViewById(thyriodId);
+
+                int sickleId = mSickleCellGroup.getCheckedRadioButtonId();
+                mSickleButton = (RadioButton) findViewById(sickleId);
+
+                int hyperBeforeId = mHyperBeforePreg.getCheckedRadioButtonId();
+                mHyperBefore = (RadioButton) findViewById(hyperBeforeId);
+
+                int gestationId = mGestationGroup.getCheckedRadioButtonId();
+                mGestationButton = (RadioButton) findViewById(gestationId);
+
+                //Getting the text from the selected options
+                String hyperHistoryAns = mHyperButton.getText().toString();
+                String cesareanAns = mCesareanButton.getText().toString();
+                String diabeticsAns = mDiabeticButton.getText().toString();
+                String chronicAns = mChronicButton.getText().toString();
+                String thyroidAns = mThyroidButton.getText().toString();
+                String sickleCellAns = mSickleButton.getText().toString();
+                String hyperBeforeAns = mHyperBefore.getText().toString();
+                String gestationAns = mGestationButton.getText().toString();
+
+                //Save the Parse object
+                mHealthYesNoQuestions = new HealthYesNoQuestions();
+                mHealthYesNoQuestions.setUuidString();
+                mHealthYesNoQuestions.setHistoryHypertension(hyperHistoryAns);
+                mHealthYesNoQuestions.setCesarean(cesareanAns);
+                mHealthYesNoQuestions.setDiabetic(diabeticsAns);
+                mHealthYesNoQuestions.setChronicRenal(chronicAns);
+                mHealthYesNoQuestions.setThyroid(thyroidAns);
+                mHealthYesNoQuestions.setSickleCell(sickleCellAns);
+                mHealthYesNoQuestions.setHypertensive(hyperBeforeAns);
+                mHealthYesNoQuestions.setMultipleGestation(gestationAns);
+
+                mHealthYesNoQuestions.pinInBackground(Constants.INFO_SAVE_LABEL, new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e == null) {
+                            //Saving was successful
+                            getIntentAndSetHealthInfo();
+                        } else {
+                            //There was a problem saving
+                        }
+                    }
+                });
+
+                Helper.makeToast(HealthYesNoActivity.this, mHyperButton.getText().toString());
             }
         });
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    /**
+     * Get the Client contact information Uuid
+     * and set the Health information
+     */
+    private void getIntentAndSetHealthInfo() {
+        Intent intent = getIntent();
+
+        if (intent != null && intent.hasExtra(Constants.CLIENT_CONTACT_INFO_ID)) {
+            String clientId = intent.getStringExtra(Constants.CLIENT_CONTACT_INFO_ID);
+            Log.v(LOG_TAG, "Client Id: " + clientId);
+            //Query for the ClientInformation Object and save the Health Object to it.
+            ParseQuery<ClientContactInformation> query = ClientContactInformation.getQuery();
+            query.fromLocalDatastore();
+            query.whereEqualTo(Constants.UUID_FIELD, clientId);
+            query.getFirstInBackground(new GetCallback<ClientContactInformation>() {
+                @Override
+                public void done(ClientContactInformation clientInfo, ParseException e) {
+                    if (e == null) {
+                        //Attach the Health Object to the returned Client Object
+                        mContactInformation = clientInfo;
+                        mContactInformation.setHealthInfo(mHealthYesNoQuestions);
+                        Helper.makeToast(HealthYesNoActivity.this,"Done making relationship");
+                    } else {
+                        //There was a problem getting the object
+                        Log.e(LOG_TAG, e.getMessage());
+                    }
+                }
+            });
+        } else {
+            Toast.makeText(HealthYesNoActivity.this,
+                    "Error getting the Reference Client Object Uuid", Toast.LENGTH_LONG)
+                    .show();
+        }
     }
 
     @Override
@@ -56,7 +193,6 @@ public class HealthYesNoActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_sync) {
-            //Sync the data to Parse.com
             syncData();
         }
         return super.onOptionsItemSelected(item);
@@ -114,4 +250,5 @@ public class HealthYesNoActivity extends AppCompatActivity {
             Helper.makeToast(this, "No internet connection");
         }
     }
+
 }

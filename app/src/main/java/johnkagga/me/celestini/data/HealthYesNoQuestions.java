@@ -22,11 +22,11 @@ public class HealthYesNoQuestions extends ParseObject {
     }
 
     public void setHistoryHypertension(String historyHypertension) {
-        put("HypertensionPP", historyHypertension);
+        put("HypertensionHistory", historyHypertension);
     }
 
     public boolean getHypertensionHistory() {
-        return getBoolean("HypertensionPP");
+        return getBoolean("HypertensionHistory");
     }
 
     public void setCesarean(String cesarean) {
@@ -38,11 +38,11 @@ public class HealthYesNoQuestions extends ParseObject {
     }
 
     public void setHypertensive(String hypertensive) {
-        put("Hypertensive", hypertensive);
+        put("HypertensiveBeforePregnancy", hypertensive);
     }
 
     public String getHypertensive() {
-        return getString("Hypertensive");
+        return getString("HypertensiveBeforePregnancy");
     }
 
     public void setDiabetic(String diabetic) {
@@ -77,8 +77,11 @@ public class HealthYesNoQuestions extends ParseObject {
         return getString("SickleCell");
     }
 
-    public static ParseQuery<HealthYesNoQuestions> getQuery()
-    {
+    public void setMultipleGestation(String multipleGestation) {
+        put("MultipleGestation", multipleGestation);
+    }
+
+    public static ParseQuery<HealthYesNoQuestions> getQuery() {
         return ParseQuery.getQuery(HealthYesNoQuestions.class);
     }
 }

@@ -15,11 +15,5 @@
         android:icon="@drawable/ic_sync_white_36dp"
         app:showAsAction="always"/>
 
-    <item
-        android:id="@+id/action_camera"
-        android:orderInCategory="98"
-        android:icon="@drawable/ic_camera_alt_white_36dp"
-        app:showAsAction="always"/>
-
 
 </menu>
