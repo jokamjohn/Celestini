@@ -135,14 +135,10 @@ public class ClientContactInfoActivity extends AppCompatActivity {
                         }
                     });
                 }
-
-
             }
         });
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
     }
 
     /**

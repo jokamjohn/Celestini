@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
     private ParseUser currentUser;
     private Button mHQButton;
+    protected Button mCh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +35,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, HealthYesNoActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        mCh = (Button) findViewById(R.id.ch);
+        mCh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,HealthCheckQuestionsActivity.class);
                 startActivity(intent);
             }
         });

@@ -269,8 +269,6 @@ public class HealthYesNoActivity extends AppCompatActivity {
     private void startHealthYesNoActivity() {
         Intent checkIntent = new Intent(this, HealthCheckQuestionsActivity.class);
         checkIntent.putExtra(Constants.CLIENT_CONTACT_INFO_ID, clientId);
-        checkIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        checkIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(checkIntent);
     }
 }

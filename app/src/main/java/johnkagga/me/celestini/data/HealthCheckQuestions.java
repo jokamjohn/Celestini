@@ -3,6 +3,7 @@ package johnkagga.me.celestini.data;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -13,19 +14,19 @@ import java.util.UUID;
 public class HealthCheckQuestions extends ParseObject {
 
     public void setDiseases(List<String> diseases) {
-        put("Diseases", diseases);
+        put("HasDiseases", diseases);
     }
 
     public List getDiseases() {
-        return getList("Diseases");
+        return getList("HasDiseases");
     }
 
     public void setDrugs(List<String> drugs) {
-        put("Drugs", drugs);
+        put("OnDrugs", drugs);
     }
 
     public List getDrugs() {
-        return getList("Drugs");
+        return getList("OnDrugs");
     }
 
     public void setOtherDiseases(String otherDiseases) {
@@ -44,21 +45,13 @@ public class HealthCheckQuestions extends ParseObject {
         return getList("Preeclampsia");
     }
 
-    public void setGestation(List gestation) {
-        put("Gestation", gestation);
+    public void setMensurationDate(Date date){
+        put("MensurationDate",date);
     }
-
-    public List getGestation() {
-        return getList("Gestation");
-    }
-
     public void setUuidString() {
         UUID uuid = UUID.randomUUID();
         put("Uuid", uuid.toString());
     }
 
-    public String getUuidString() {
-        return getString("Uuid");
-    }
 
 }
