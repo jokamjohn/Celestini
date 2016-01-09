@@ -81,6 +81,14 @@ public class HealthYesNoQuestions extends ParseObject {
         put("MultipleGestation", multipleGestation);
     }
 
+    public void setGestation(String gestation){
+        put("Gestation",gestation);
+    }
+
+    public String getGestation(){
+        return getString("Gestation");
+    }
+
     public static ParseQuery<HealthYesNoQuestions> getQuery() {
         return ParseQuery.getQuery(HealthYesNoQuestions.class);
     }

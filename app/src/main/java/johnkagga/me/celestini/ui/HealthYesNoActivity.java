@@ -6,29 +6,23 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
-import com.parse.ParseUser;
 import com.parse.SaveCallback;
-
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import johnkagga.me.celestini.Constants;
-import johnkagga.me.celestini.Helper;
 import johnkagga.me.celestini.R;
 import johnkagga.me.celestini.data.ClientContactInformation;
 import johnkagga.me.celestini.data.HealthYesNoQuestions;
+import johnkagga.me.celestini.utilites.Constants;
+import johnkagga.me.celestini.utilites.Helper;
 
 public class HealthYesNoActivity extends AppCompatActivity {
 
@@ -50,8 +44,19 @@ public class HealthYesNoActivity extends AppCompatActivity {
     RadioGroup mHyperBeforePreg;
     @Bind(R.id.multiple_gestationgroup)
     RadioGroup mGestationGroup;
+    @Bind(R.id.gestation_options)
+    RadioGroup mGestationOptions;
     @Bind(R.id.fab)
     FloatingActionButton fab;
+
+    @Bind(R.id.multiple_gestation_yes)
+    RadioButton mMultiple_yes;
+    @Bind(R.id.twins)
+    RadioButton mTwins;
+    @Bind(R.id.triplets)
+    RadioButton mTriplets;
+    @Bind(R.id.other)
+    RadioButton mOther;
 
     private RadioButton mHyperButton;
     private RadioButton mCesareanButton;
@@ -61,6 +66,7 @@ public class HealthYesNoActivity extends AppCompatActivity {
     private RadioButton mSickleButton;
     private RadioButton mHyperBefore;
     private RadioButton mGestationButton;
+    private RadioButton mGestationOption;
 
     private HealthYesNoQuestions mHealthYesNoQuestions;
     private ClientContactInformation mContactInformation;
@@ -74,6 +80,10 @@ public class HealthYesNoActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ButterKnife.bind(this);
+
+        //Initialize the Question Object
+        mHealthYesNoQuestions = new HealthYesNoQuestions();
+
         setTheFab();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
@@ -113,6 +123,16 @@ public class HealthYesNoActivity extends AppCompatActivity {
                 int gestationId = mGestationGroup.getCheckedRadioButtonId();
                 mGestationButton = (RadioButton) findViewById(gestationId);
 
+                //Setting the gestation option.
+                if (mTwins.isEnabled() || mTriplets.isEnabled() || mOther.isEnabled()) {
+
+                    int optionId = mGestationOptions.getCheckedRadioButtonId();
+                    mGestationOption = (RadioButton) findViewById(optionId);
+                    String choice = mGestationOption.getText().toString();
+                    Log.v(LOG_TAG, "Gestation choice: " + choice);
+
+                    mHealthYesNoQuestions.setGestation(choice);
+                }
                 //Getting the text from the selected options
                 String hyperHistoryAns = mHyperButton.getText().toString();
                 String cesareanAns = mCesareanButton.getText().toString();
@@ -124,7 +144,6 @@ public class HealthYesNoActivity extends AppCompatActivity {
                 String gestationAns = mGestationButton.getText().toString();
 
                 //Save the Parse object
-                mHealthYesNoQuestions = new HealthYesNoQuestions();
                 mHealthYesNoQuestions.setUuidString();
                 mHealthYesNoQuestions.setHistoryHypertension(hyperHistoryAns);
                 mHealthYesNoQuestions.setCesarean(cesareanAns);
@@ -143,6 +162,7 @@ public class HealthYesNoActivity extends AppCompatActivity {
                             getIntentAndSetHealthInfo();
                         } else {
                             //There was a problem saving
+                            //TODO Add AlertDialog to enable the user to try again
                         }
                     }
                 });
@@ -150,6 +170,34 @@ public class HealthYesNoActivity extends AppCompatActivity {
                 Helper.makeToast(HealthYesNoActivity.this, mHyperButton.getText().toString());
             }
         });
+    }
+
+    /**
+     * This method enables the Gestation options
+     *
+     * @param view View
+     */
+    public void setGestationOptions(View view) {
+        boolean checked = ((RadioButton) view).isChecked();
+        if (checked) {
+            mTwins.setEnabled(true);
+            mTriplets.setEnabled(true);
+            mOther.setEnabled(true);
+        }
+    }
+
+    /**
+     * This method disables the Gestation Options
+     *
+     * @param view View
+     */
+    public void grayOutGestationOptions(View view) {
+        boolean checked = ((RadioButton) view).isChecked();
+        if (checked) {
+            mTwins.setEnabled(false);
+            mTriplets.setEnabled(false);
+            mOther.setEnabled(false);
+        }
     }
 
     /**
@@ -187,76 +235,6 @@ public class HealthYesNoActivity extends AppCompatActivity {
             Toast.makeText(HealthYesNoActivity.this,
                     "Error getting the Reference Client Object Uuid", Toast.LENGTH_LONG)
                     .show();
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_health_yes_no, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_sync) {
-            syncData();
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * This method queries for all the data saved in the Parse LocalDataStore
-     * for all the objects pinned with Constants.INFO_SAVE_LABEL. And
-     * then saves the data to Parse.com and unpins the data.
-     */
-    private void syncData() {
-        if (Helper.isOnline(this)) {
-            if (ParseUser.getCurrentUser() != null) {
-                //If we have a user then sync the data
-                //Get the data from the LocalDataStore
-                ParseQuery<ClientContactInformation> query = ClientContactInformation.getQuery();
-                query.fromPin(Constants.INFO_SAVE_LABEL);
-                query.whereEqualTo(Constants.IS_SYNCED, false);
-                query.findInBackground(new FindCallback<ClientContactInformation>() {
-                    @Override
-                    public void done(List<ClientContactInformation> data, ParseException e) {
-                        if (e == null) {
-                            for (final ClientContactInformation info : data) {
-                                //set the sync status to true before syncing to parse
-                                info.setSync(true);
-                                info.saveInBackground(new SaveCallback() {
-                                    @Override
-                                    public void done(ParseException e) {
-                                        if (e == null) {
-                                            //Saving is successful
-                                            //Unpin from the local data store
-                                            info.unpinInBackground(Constants.INFO_SAVE_LABEL);
-                                            Helper.makeToast(HealthYesNoActivity.this, "Sync successful");
-                                        } else {
-                                            //if saving fails set sync to false
-                                            info.setSync(false);
-                                            Log.e(LOG_TAG, "Error saving in background" + e.getMessage());
-                                        }
-                                    }
-                                });
-                            }
-                        } else {
-                            Helper.makeToast(HealthYesNoActivity.this, "Error syncing: " + e.getMessage());
-                        }
-
-                    }
-                });
-            } else {
-                //Redirect to the login activity
-                Intent loginIntent = new Intent(this, LoginActivity.class);
-                loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(loginIntent);
-            }
-        } else {
-            //No network connection
-            Helper.makeToast(this, "No internet connection");
         }
     }
 

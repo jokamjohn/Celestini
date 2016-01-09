@@ -1,4 +1,4 @@
-package johnkagga.me.celestini;
+package johnkagga.me.celestini.utilites;
 
 /**
  * Created by jokamjohn on 1/6/2016.

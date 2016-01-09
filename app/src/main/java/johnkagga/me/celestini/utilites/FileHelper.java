@@ -1,4 +1,4 @@
-package johnkagga.me.celestini;
+package johnkagga.me.celestini.utilites;
 
 import android.content.Context;
 import android.graphics.Bitmap;

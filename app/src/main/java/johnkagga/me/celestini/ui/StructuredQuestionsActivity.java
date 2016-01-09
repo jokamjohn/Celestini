@@ -20,8 +20,8 @@ import com.parse.SaveCallback;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import johnkagga.me.celestini.Constants;
-import johnkagga.me.celestini.Helper;
+import johnkagga.me.celestini.utilites.Constants;
+import johnkagga.me.celestini.utilites.Helper;
 import johnkagga.me.celestini.R;
 import johnkagga.me.celestini.data.ClientContactInformation;
 import johnkagga.me.celestini.data.StructuredQuestions;

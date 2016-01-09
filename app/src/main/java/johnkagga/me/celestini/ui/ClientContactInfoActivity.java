@@ -11,9 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
-import com.parse.FindCallback;
 import com.parse.ParseGeoPoint;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -21,10 +19,9 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
-import johnkagga.me.celestini.Constants;
-import johnkagga.me.celestini.Helper;
+import johnkagga.me.celestini.utilites.Constants;
+import johnkagga.me.celestini.utilites.Helper;
 import johnkagga.me.celestini.R;
 import johnkagga.me.celestini.data.ClientContactInformation;
 
@@ -183,67 +180,9 @@ public class ClientContactInfoActivity extends AppCompatActivity {
 
         switch (id) {
             case R.id.action_settings:
-
-                break;
-            case R.id.action_sync:
-                syncData();
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
-
-    /**
-     * Sync the data to Parse.com Or redirect to the Login Screen if
-     * there is no ParseUser.
-     */
-    private void syncData() {
-        if (Helper.isOnline(this)) {
-            if (ParseUser.getCurrentUser() != null) {
-                //If we have a user then sync the data
-                //Get the data from the LocalDataStore
-                ParseQuery<ClientContactInformation> query = ClientContactInformation.getQuery();
-                query.fromPin(Constants.INFO_SAVE_LABEL);
-                query.whereEqualTo(Constants.IS_SYNCED, false);
-                query.findInBackground(new FindCallback<ClientContactInformation>() {
-                    @Override
-                    public void done(List<ClientContactInformation> data, com.parse.ParseException e) {
-                        if (e == null) {
-                            for (final ClientContactInformation info : data) {
-                                //set the sync status to true before syncing to parse
-                                info.setSync(true);
-                                info.saveInBackground(new SaveCallback() {
-                                    @Override
-                                    public void done(com.parse.ParseException e) {
-                                        if (e == null) {
-                                            //Saving is successful
-                                            //Unpin from the local data store
-                                            info.unpinInBackground(Constants.INFO_SAVE_LABEL);
-                                            Helper.makeToast(ClientContactInfoActivity.this, "Sync successful");
-                                        } else {
-                                            //if saving fails set sync to false
-                                            info.setSync(false);
-                                            Log.e(LOG_TAG, "Error saving in background" + e.getMessage());
-                                        }
-                                    }
-                                });
-                            }
-                        } else {
-                            Helper.makeToast(ClientContactInfoActivity.this, "Error syncing: " + e.getMessage());
-                        }
-                    }
-                });
-            } else {
-                //Redirect to the login activity
-                Intent loginIntent = new Intent(this, LoginActivity.class);
-                loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(loginIntent);
-            }
-        } else {
-            //No network connection
-            Helper.makeToast(this, "No internet connection");
-        }
-    }
-
 
 }

@@ -13,7 +13,7 @@ import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 
-import johnkagga.me.celestini.Helper;
+import johnkagga.me.celestini.utilites.Helper;
 import johnkagga.me.celestini.R;
 
 public class LoginActivity extends AppCompatActivity {

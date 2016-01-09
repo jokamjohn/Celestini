@@ -14,8 +14,8 @@ import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
-import johnkagga.me.celestini.Constants;
-import johnkagga.me.celestini.Helper;
+import johnkagga.me.celestini.utilites.Constants;
+import johnkagga.me.celestini.utilites.Helper;
 import johnkagga.me.celestini.R;
 import johnkagga.me.celestini.data.ClientContactInformation;
 import johnkagga.me.celestini.data.HealthCheckQuestions;

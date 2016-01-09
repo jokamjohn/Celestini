@@ -23,8 +23,8 @@ import java.util.Date;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import johnkagga.me.celestini.Constants;
-import johnkagga.me.celestini.Helper;
+import johnkagga.me.celestini.utilites.Constants;
+import johnkagga.me.celestini.utilites.Helper;
 import johnkagga.me.celestini.R;
 import johnkagga.me.celestini.data.ClientContactInformation;
 import johnkagga.me.celestini.data.HealthCheckQuestions;
@@ -358,6 +358,5 @@ public class HealthCheckQuestionsActivity extends AppCompatActivity {
         structureIntent.putExtra(Constants.CLIENT_CONTACT_INFO_ID, clientId);
         startActivity(structureIntent);
     }
-
 
 }
