@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.parse.GetCallback;
@@ -38,14 +37,6 @@ public class StructuredQuestionsActivityFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_structured_questions, container, false);
-
-        Button button = (Button) rootView.findViewById(R.id.button4);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                testHealthInfo();
-            }
-        });
 
         return rootView;
     }
@@ -91,7 +82,6 @@ public class StructuredQuestionsActivityFragment extends Fragment {
     private void testHealthInfo() {
         mStructuredQuestions = new StructuredQuestions();
         mStructuredQuestions.setUuidString();
-        mStructuredQuestions.setChronicDiseases("Mango");
         mStructuredQuestions.pinInBackground(Constants.INFO_SAVE_LABEL, new SaveCallback() {
             @Override
             public void done(ParseException e) {

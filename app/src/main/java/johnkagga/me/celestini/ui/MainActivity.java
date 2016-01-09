@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private ParseUser currentUser;
     private Button mHQButton;
     protected Button mCh;
+    private Button mStr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +48,16 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        mStr = (Button) findViewById(R.id.buttostrn);
+        mStr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,StructuredQuestionsActivity.class);
+                startActivity(intent);
+            }
+        });
+
         currentUser = ParseUser.getCurrentUser();
 
         if (currentUser == null) {

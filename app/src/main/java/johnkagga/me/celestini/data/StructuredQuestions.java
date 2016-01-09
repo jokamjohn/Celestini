@@ -11,13 +11,9 @@ import java.util.UUID;
 @ParseClassName("StructuredQuestions")
 public class StructuredQuestions extends ParseObject {
 
-    public void setUuidString() {
-        UUID uuid = UUID.randomUUID();
-        put("Uuid", uuid.toString());
-    }
 
-    public String getUuidString() {
-        return getString("Uuid");
+    public void setPegnanciesBefore(int numberOfPreg) {
+        put("NoOfPregnanciesBefore", numberOfPreg);
     }
 
     public void setOutcome(String pregOutcome) {
@@ -28,19 +24,20 @@ public class StructuredQuestions extends ParseObject {
         return getString("PregnancyOutcome");
     }
 
-    public void setChronicDiseases(String chronicDiseases) {
-        put("ChronicDiseases", chronicDiseases);
-    }
-
-    public String getChronicDiseases() {
-        return getString("ChronicDiseases");
-    }
-
     public void setInfertility(String infertility) {
         put("Infertility", infertility);
     }
 
     public String getInfertility() {
         return getString("Infertility");
+    }
+
+    public void setUuidString() {
+        UUID uuid = UUID.randomUUID();
+        put("Uuid", uuid.toString());
+    }
+
+    public String getUuidString() {
+        return getString("Uuid");
     }
 }

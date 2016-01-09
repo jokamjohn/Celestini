@@ -98,6 +98,10 @@ public class HealthCheckQuestionsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
+    /**
+     * This method saves the user input into the HealthCheckQuestion object
+     * and then in the Parse LocalDataStore.
+     */
     private void saveDataInLocalDataStore() {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -165,6 +169,7 @@ public class HealthCheckQuestionsActivity extends AppCompatActivity {
         //Is the view checked
         boolean checked = ((CheckBox) view).isChecked();
 
+        // Check which checkbox was clicked
         switch (view.getId()) {
             case R.id.headache_cb:
                 String headache = mHeadache.getText().toString();
