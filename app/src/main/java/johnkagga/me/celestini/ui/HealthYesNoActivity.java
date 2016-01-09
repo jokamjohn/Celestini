@@ -133,6 +133,11 @@ public class HealthYesNoActivity extends AppCompatActivity {
 
                     mHealthYesNoQuestions.setGestation(choice);
                 }
+                else {
+                    mHealthYesNoQuestions.setGestation("None");
+                    //TODO check out this option whether it works.
+                }
+
                 //Getting the text from the selected options
                 String hyperHistoryAns = mHyperButton.getText().toString();
                 String cesareanAns = mCesareanButton.getText().toString();

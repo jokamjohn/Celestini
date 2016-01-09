@@ -16,5 +16,6 @@
         <item>Take photo</item>
         <item>Choose photo</item>
     </string-array>
+    <string name="title_activity_sync">SyncActivity</string>
 
 </resources>

@@ -35,4 +35,12 @@
         android:layout_below="@+id/ch"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="56dp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sync"
+        android:id="@+id/sync_button"
+        android:layout_below="@+id/buttostrn"
+        android:layout_centerHorizontal="true"/>
 </RelativeLayout>

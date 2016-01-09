@@ -32,6 +32,10 @@ public class ClientContactInformation extends ParseObject {
         return getString("LastName");
     }
 
+    public String getName(){
+        return getFirstName() + getLastName();
+    }
+
     public void setDateOfBirth(Date dateOfBirth) {
         put("DateOfBirth", dateOfBirth);
     }
