@@ -15,7 +15,6 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin">
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -23,10 +22,8 @@
 
             <TextView
                 android:id="@+id/textView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="History of hypertension previous pregnancies"
-                android:textAppearance="?android:attr/textAppearanceMedium"/>
+                style="@style/RadioQuestionStyle"
+                android:text="History of hypertension previous pregnancies"/>
 
             <RadioGroup
                 android:id="@+id/hyper_history_group"
@@ -37,17 +34,13 @@
 
                 <RadioButton
                     android:id="@+id/hyper_history_yes"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    style="@style/RadioOptionYesNo"
                     android:layout_weight="2"
                     android:text="Yes"/>
 
                 <RadioButton
                     android:id="@+id/hyper_history_no"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:checked="true"
+                    style="@style/RadioOptionNo"
                     android:text="No"/>
             </RadioGroup>
         </LinearLayout>
@@ -59,10 +52,9 @@
 
             <TextView
                 android:id="@+id/cesarean_textView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Have you had a previous cesarean section"
-                android:textAppearance="?android:attr/textAppearanceMedium"/>
+                style="@style/RadioQuestionStyle"
+                android:layout_marginTop="@dimen/question_margin_top"
+                android:text="Have you had a previous cesarean section"/>
 
             <RadioGroup
                 android:id="@+id/cesarean_group"
@@ -73,17 +65,13 @@
 
                 <RadioButton
                     android:id="@+id/cesarean_yes"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    style="@style/RadioOptionYesNo"
                     android:layout_weight="2"
                     android:text="Yes"/>
 
                 <RadioButton
                     android:id="@+id/cesarean_no"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:checked="true"
+                    style="@style/RadioOptionNo"
                     android:text="No"/>
             </RadioGroup>
         </LinearLayout>
@@ -95,10 +83,9 @@
 
             <TextView
                 android:id="@+id/diabetic_textView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Are you diabetic (before pregnancy)"
-                android:textAppearance="?android:attr/textAppearanceMedium"/>
+                style="@style/RadioQuestionStyle"
+
+                android:text="Are you diabetic (before pregnancy)"/>
 
             <RadioGroup
                 android:id="@+id/diabetic_group"
@@ -109,17 +96,13 @@
 
                 <RadioButton
                     android:id="@+id/diabetic_yes"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    style="@style/RadioOptionYesNo"
                     android:layout_weight="2"
                     android:text="Yes"/>
 
                 <RadioButton
                     android:id="@+id/diabetic_no"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:checked="true"
+                    style="@style/RadioOptionNo"
                     android:text="No"/>
             </RadioGroup>
         </LinearLayout>
@@ -131,10 +114,9 @@
 
             <TextView
                 android:id="@+id/chronic_textView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Do you have chronic renal disease"
-                android:textAppearance="?android:attr/textAppearanceMedium"/>
+                style="@style/RadioQuestionStyle"
+                android:layout_marginTop="@dimen/question_margin_top"
+                android:text="Do you have chronic renal disease"/>
 
             <RadioGroup
                 android:id="@+id/chronic_group"
@@ -145,17 +127,13 @@
 
                 <RadioButton
                     android:id="@+id/chronic_renal_yes"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    style="@style/RadioOptionYesNo"
                     android:layout_weight="2"
                     android:text="Yes"/>
 
                 <RadioButton
                     android:id="@+id/chronic_renal_no"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:checked="true"
+                    style="@style/RadioOptionNo"
                     android:text="No"/>
 
             </RadioGroup>
@@ -168,10 +146,8 @@
 
             <TextView
                 android:id="@+id/thyroid_textView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Do you have thyroid disease"
-                android:textAppearance="?android:attr/textAppearanceMedium"/>
+                style="@style/RadioQuestionStyle"
+                android:text="Do you have thyroid disease"/>
 
             <RadioGroup
                 android:id="@+id/thyroid_group"
@@ -182,17 +158,13 @@
 
                 <RadioButton
                     android:id="@+id/thyroid_yes"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    style="@style/RadioOptionYesNo"
                     android:layout_weight="2"
                     android:text="Yes"/>
 
                 <RadioButton
                     android:id="@+id/thyroid_no"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:checked="true"
+                    style="@style/RadioOptionNo"
                     android:text="No"/>
             </RadioGroup>
         </LinearLayout>
@@ -204,10 +176,9 @@
 
             <TextView
                 android:id="@+id/sickle_cell_textView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/RadioQuestionStyle"
                 android:text="Do you have sickle cell disease"
-                android:textAppearance="?android:attr/textAppearanceMedium"/>
+                />
 
             <RadioGroup
                 android:id="@+id/sickle_cell_group"
@@ -218,17 +189,13 @@
 
                 <RadioButton
                     android:id="@+id/sickle_cells_yes"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    style="@style/RadioOptionYesNo"
                     android:layout_weight="2"
                     android:text="Yes"/>
 
                 <RadioButton
                     android:id="@+id/sickle_cells_no"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:checked="true"
+                    style="@style/RadioOptionNo"
                     android:text="No"/>
 
             </RadioGroup>
@@ -241,10 +208,9 @@
 
             <TextView
                 android:id="@+id/hypertensive_before_preg_textView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/RadioQuestionStyle"
                 android:text="Are you hypertensive (before pregnancy)"
-                android:textAppearance="?android:attr/textAppearanceMedium"/>
+                />
 
             <RadioGroup
                 android:id="@+id/hypertensive_before_preg_group"
@@ -255,17 +221,13 @@
 
                 <RadioButton
                     android:id="@+id/hypertensive_before_preg_yes"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    style="@style/RadioOptionYesNo"
                     android:layout_weight="2"
                     android:text="Yes"/>
 
                 <RadioButton
                     android:id="@+id/hypertensive_before_preg_no"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:checked="true"
+                    style="@style/RadioOptionNo"
                     android:text="No"/>
 
             </RadioGroup>
@@ -278,10 +240,9 @@
 
             <TextView
                 android:id="@+id/multiple_gestation_textView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/RadioQuestionStyle"
                 android:text="Do you have a multiple gestation"
-                android:textAppearance="?android:attr/textAppearanceMedium"/>
+                />
 
             <RadioGroup
                 android:id="@+id/multiple_gestationgroup"
@@ -292,18 +253,14 @@
 
                 <RadioButton
                     android:id="@+id/multiple_gestation_yes"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    style="@style/RadioOptionYesNo"
                     android:layout_weight="2"
                     android:onClick="setGestationOptions"
                     android:text="Yes"/>
 
                 <RadioButton
                     android:id="@+id/multiple_gestation_no"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:checked="true"
+                    style="@style/RadioOptionNo"
                     android:onClick="grayOutGestationOptions"
                     android:text="No"/>
 
@@ -316,38 +273,34 @@
 
                 <TextView
                     android:id="@+id/if_multiple_gestation_yes"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    style="@style/RadioQuestionStyle"
                     android:text="If yes"
-                    android:textAppearance="?android:attr/textAppearanceMedium"/>
+                    />
 
                 <RadioGroup
-                    android:layout_width="match_parent"
                     android:id="@+id/gestation_options"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal"
                     android:weightSum="3">
 
                     <RadioButton
                         android:id="@+id/twins"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        style="@style/RadioOptionYesNo"
                         android:layout_weight="1"
                         android:enabled="false"
                         android:text="Twins"/>
 
                     <RadioButton
                         android:id="@+id/triplets"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        style="@style/RadioOptionYesNo"
                         android:layout_weight="1"
                         android:enabled="false"
                         android:text="Triplets"/>
 
                     <RadioButton
                         android:id="@+id/other"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        style="@style/RadioOptionYesNo"
                         android:layout_weight="1"
                         android:checked="true"
                         android:enabled="false"

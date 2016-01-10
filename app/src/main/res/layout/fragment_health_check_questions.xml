@@ -9,40 +9,40 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/back_ground"
         android:orientation="vertical"
         android:paddingBottom="@dimen/activity_vertical_margin"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin">
 
-        <TextView
-            android:id="@+id/mentral_label"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Your last Menstrual date"
-            android:textAppearance="?android:attr/textAppearanceMedium"/>
+        <LinearLayout
+            style="@style/check_box_linear_layout"
+            >
 
-        <EditText
-            android:id="@+id/menstral_date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="dd/MM/yyy"
-            android:inputType="date"
-            android:singleLine="true"/>
+            <TextView
+                android:id="@+id/mentral_label"
+                style="@style/CheckBoxQuestions"
+                android:text="Your last Menstrual date"/>
+
+            <EditText
+                android:id="@+id/menstral_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="dd/MM/yyy"
+                android:inputType="date"
+                android:singleLine="true"/>
+        </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:orientation="vertical">
+            style="@style/check_box_linear_layout"
+            >
 
             <TextView
                 android:id="@+id/diseases_text_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Do you have any of these dieases"
-                android:textAppearance="?android:attr/textAppearanceMedium"/>
+                style="@style/CheckBoxQuestions"
+                android:text="Do you have any of these dieases"/>
 
             <CheckBox
                 android:id="@+id/headache_cb"
@@ -109,16 +109,13 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            style="@style/check_box_linear_layout">
 
             <TextView
                 android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/CheckBoxQuestions"
                 android:text="Are you on any of the following drugs"
-                android:textAppearance="?android:attr/textAppearanceMedium"/>
+                />
 
             <CheckBox
                 android:id="@+id/hypertension_drugs_cb"
@@ -163,20 +160,18 @@
                 android:enabled="false"
                 android:hint="Please Specify other drugs here"
                 android:inputType="textMultiLine"
+                android:textColor="@color/colorPrimaryText"
                 android:textStyle="italic"/>
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            style="@style/check_box_linear_layout">
 
             <TextView
                 android:id="@+id/family_textview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/CheckBoxQuestions"
                 android:text="Family history of preeclampsia"
-                android:textAppearance="?android:attr/textAppearanceMedium"/>
+                />
 
             <CheckBox
                 android:id="@+id/pre_mother_cb"
