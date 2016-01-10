@@ -24,6 +24,8 @@
         <item name="android:layout_marginBottom">@dimen/radio_text_margin_bottom</item>
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
         <item name="android:textColor">@color/colorPrimaryText</item>
+        <item name="android:background">@android:color/white</item>
+        <item name="android:padding">16dp</item>
     </style>
 
     <style name="RadioOptionYesNo">
@@ -55,6 +57,14 @@
         <item name="android:background">@android:color/white</item>
         <item name="android:layout_gravity">center_horizontal</item>
         <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="RadioGroup">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:weightSum">4</item>
+        <item name="android:background">@android:color/white</item>
     </style>
 
 </resources>
