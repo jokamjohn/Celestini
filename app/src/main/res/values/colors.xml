@@ -13,4 +13,7 @@
     <color name="colorSecondaryText">#727272</color>
     <color name="icons">#FFFFFF</color>
     <color name="divider">#B6B6B6</color>
+    <!--background colors-->
+    <color name="background_1">#4DB6AC</color>
+    <color name="background_2">#E0F2F1</color>
 </resources>

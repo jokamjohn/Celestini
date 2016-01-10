@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:editTextBackground">@drawable/celestini_edit_text_holo_light</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -65,6 +66,15 @@
         <item name="android:orientation">horizontal</item>
         <item name="android:weightSum">4</item>
         <item name="android:background">@android:color/white</item>
+    </style>
+
+    <style name="EditTextStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:ems">10</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textColor">@color/colorSecondaryText</item>
+        <item name="android:textColorHint">@color/colorSecondaryText</item>
     </style>
 
 </resources>

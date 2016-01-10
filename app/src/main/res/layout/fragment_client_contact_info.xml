@@ -9,136 +9,142 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/back_ground"
         android:orientation="vertical"
         android:paddingBottom="@dimen/activity_vertical_margin"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
-        >
+        android:weightSum="3">
 
-        <TextView
-            android:id="@+id/client_info_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="Client Information"
-            android:textAppearance="?android:attr/textAppearanceMedium"/>
-
-        <LinearLayout
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
-            <EditText
-                android:id="@+id/first_name"
+            android:layout_marginBottom="8dp"
+            android:layout_weight="1"
+            android:background="@android:color/white">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="First Name"
-                android:inputType="textPersonName"
-                android:singleLine="true"/>
+                android:orientation="vertical"
+                android:padding="16dp">
 
-            <EditText
-                android:id="@+id/last_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Last Name"
-                android:inputType="textPersonName"
-                android:singleLine="true"/>
+                <EditText
+                    android:id="@+id/first_name"
+                    style="@style/EditTextStyle"
+                    android:hint="First Name"
+                    android:inputType="textPersonName"/>
 
-            <EditText
-                android:id="@+id/phone_number"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Phone Number"
-                android:inputType="phone"
-                android:singleLine="true"/>
+                <EditText
+                    android:id="@+id/last_name"
+                    style="@style/EditTextStyle"
+                    android:hint="Last Name"
+                    android:inputType="textPersonName"/>
 
-            <EditText
-                android:id="@+id/alt_phone_number"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Alt Phone Number"
-                android:inputType="phone"/>
+                <EditText
+                    android:id="@+id/phone_number"
+                    style="@style/EditTextStyle"
+                    android:hint="Phone Number"
+                    android:inputType="phone"/>
 
 
-        </LinearLayout>
+                <EditText
+                    android:id="@+id/alt_phone_number"
+                    style="@style/EditTextStyle"
+                    android:hint="Alt Phone Number"
+                    android:inputType="phone"/>
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
 
-        <LinearLayout
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@android:color/white">
 
-
-            <EditText
-                android:id="@+id/date_of_birth"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="dd/MM/yyyy"
-                android:inputType="date"
-                android:singleLine="true"/>
+                android:orientation="vertical"
+                android:padding="16dp">
 
-            <EditText
-                android:id="@+id/tribe"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Tribe"
-                android:singleLine="true"/>
-
-            <EditText
-                android:id="@+id/occupation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Occupation"
-                android:singleLine="true"/>
-
-            <EditText
-                android:id="@+id/village"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Village"
-                android:singleLine="true"/>
-
-            <EditText
-                android:id="@+id/district"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="District"
-                android:singleLine="true"/>
-        </LinearLayout>
+                <EditText
+                    android:id="@+id/date_of_birth"
+                    style="@style/EditTextStyle"
+                    android:hint="dd/MM/yyyy"
+                    android:inputType="date"/>
 
 
-        <TextView
-            android:id="@+id/geo_points_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="Geo Coordinates"
-            android:textAppearance="?android:attr/textAppearanceMedium"/>
+                <EditText
+                    android:id="@+id/tribe"
+                    style="@style/EditTextStyle"
+                    android:hint="Tribe"
+                    android:singleLine="true"/>
 
-        <LinearLayout
+                <EditText
+                    android:id="@+id/occupation"
+                    style="@style/EditTextStyle"
+                    android:hint="Occupation"/>
+
+                <EditText
+                    android:id="@+id/village"
+                    style="@style/EditTextStyle"
+                    android:hint="Village"/>
+
+                <EditText
+                    android:id="@+id/district"
+                    style="@style/EditTextStyle"
+                    android:hint="District"/>
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@android:color/white">
 
-            <EditText
-                android:id="@+id/latitude"
+            <TextView
+                android:id="@+id/geo_points_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:padding="8dp"
+                android:text="Geo Coordinates"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="20sp"/>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Latitude"
-                android:singleLine="true"/>
+                android:orientation="vertical"
+                android:padding="16dp">
 
-            <EditText
-                android:id="@+id/longitude"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Longitude"
-                android:singleLine="true"/>
-        </LinearLayout>
+                <EditText
+                    android:id="@+id/latitude"
+                    style="@style/EditTextStyle"
+                    android:hint="Latitude"
+                    android:inputType="numberDecimal"/>
 
+                <EditText
+                    android:id="@+id/longitude"
+                    style="@style/EditTextStyle"
+                    android:hint="Longitude"
+                    android:inputType="numberDecimal"/>
+
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
     </LinearLayout>
 </ScrollView>
