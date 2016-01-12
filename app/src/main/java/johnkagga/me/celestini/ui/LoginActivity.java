@@ -48,30 +48,41 @@ public class LoginActivity extends AppCompatActivity {
                     String title = "Ooops!";
                     String message = "Please enter your username and password";
                     //Dialog
-                    Helper.alertDialog(LoginActivity.this, title, message);
+                    mUsername.setError("Enter Username");
+                    mPassword.setError("Enter a Password");
+//                    Helper.alertDialog(LoginActivity.this, title, message);
                 } else {
                     //Login user
                     //make progress bar visible
                     mLoginBar.setVisibility(View.VISIBLE);
-                    ParseUser.logInInBackground(username, password, new LogInCallback() {
-                        @Override
-                        public void done(ParseUser user, ParseException e) {
-                            //hide the progress bar
-                            mLoginBar.setVisibility(View.INVISIBLE);
-                            if (e == null) {
-                                //successfully logged in
-                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(intent);
-                            } else {
-                                String title = "Login Error";
-                                String message = e.getMessage();
+                    if (Helper.isOnline(LoginActivity.this)) {
 
-                                Helper.alertDialog(LoginActivity.this, title, message);
+                        ParseUser.logInInBackground(username, password, new LogInCallback() {
+                            @Override
+                            public void done(ParseUser user, ParseException e) {
+                                //hide the progress bar
+                                mLoginBar.setVisibility(View.INVISIBLE);
+                                if (e == null) {
+                                    //successfully logged in
+                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(intent);
+                                } else {
+                                    String title = "Login Error";
+
+                                    mUsername.setError("Enter a correct Username");
+                                    mPassword.setError("Enter a correct Password");
+
+//                                    String message = e.getMessage();
+//
+//                                    Helper.alertDialog(LoginActivity.this, title, message);
+                                }
                             }
-                        }
-                    });
+                        });
+                    }else {
+                        Helper.alertDialog(LoginActivity.this,"Network","No internet connection");
+                    }
                 }
             }
         });

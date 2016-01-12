@@ -33,7 +33,7 @@ public class ClientContactInformation extends ParseObject {
     }
 
     public String getName(){
-        return getFirstName() + getLastName();
+        return getFirstName() +" " + getLastName();
     }
 
     public void setDateOfBirth(Date dateOfBirth) {
@@ -92,6 +92,11 @@ public class ClientContactInformation extends ParseObject {
     public void setVillage(String village)
     {
         put("Village",village);
+    }
+
+    public String getPhysicalLocation()
+    {
+        return getString("Village") + "-" + getString("District");
     }
 
     public void setCreatedBy(ParseUser user) {

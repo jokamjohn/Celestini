@@ -9,6 +9,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/login_background"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".ui.LoginActivity"
     tools:showIn="@layout/activity_login">
@@ -21,6 +22,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="32dp"
         android:text="@string/app_name"
+        android:textColor="@android:color/white"
         android:textSize="60sp"
         android:textStyle="bold"/>
 
@@ -29,6 +31,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/title"
+        android:textColor="@android:color/white"
         android:layout_centerHorizontal="true"
         android:text="@string/app_sub_title"
         android:textSize="13sp"
@@ -76,15 +79,10 @@
 
     <Button
         android:id="@+id/loginButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/linearLayout"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
         android:text="@string/login_label"
-        android:textAllCaps="true"
-        android:textSize="13sp"/>
+        style="@style/Buttons"/>
 
 </RelativeLayout>

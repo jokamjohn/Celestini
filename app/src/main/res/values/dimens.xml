@@ -5,4 +5,5 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="question_margin_top">16dp</dimen>
     <dimen name="radio_text_margin_bottom">8dp</dimen>
+    <dimen name="forecast_detail_horizontal_padding">16dp</dimen>
 </resources>

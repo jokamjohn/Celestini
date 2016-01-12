@@ -29,9 +29,9 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
     private ParseUser currentUser;
-    private Button mHQButton;
-    protected Button mCh;
-    private Button mStr;
+    private Button mInitialVisit;
+    protected Button mSubVisit;
+    private Button mTasks;
     private Button mSync;
 
     @Override
@@ -41,34 +41,32 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mHQButton = (Button) findViewById(R.id.hc_button);
-        mHQButton.setOnClickListener(new View.OnClickListener() {
+        mInitialVisit = (Button) findViewById(R.id.initial_visit);
+        mInitialVisit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, HealthYesNoActivity.class);
+                Intent intent = new Intent(MainActivity.this, ClientContactInfoActivity.class);
                 startActivity(intent);
             }
         });
 
-        mCh = (Button) findViewById(R.id.ch);
-        mCh.setOnClickListener(new View.OnClickListener() {
+        mSubVisit = (Button) findViewById(R.id.sub_visit);
+        mSubVisit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, HealthCheckQuestionsActivity.class);
-                startActivity(intent);
+
             }
         });
 
-        mStr = (Button) findViewById(R.id.buttostrn);
-        mStr.setOnClickListener(new View.OnClickListener() {
+        mTasks = (Button) findViewById(R.id.tasks);
+        mTasks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, StructuredQuestionsActivity.class);
-                startActivity(intent);
+
             }
         });
 
-        mSync = (Button) findViewById(R.id.sync_button);
+        mSync = (Button) findViewById(R.id.sync);
         mSync.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -127,9 +125,8 @@ public class MainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         switch (id) {
             case R.id.action_settings:
-                Intent intent = new Intent(this, ClientContactInfoActivity.class);
-                startActivity(intent);
                 break;
+
             case R.id.action_log_out:
                 ParseUser.logOut();
                 startLoginActivity();
