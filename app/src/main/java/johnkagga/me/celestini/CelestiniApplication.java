@@ -17,10 +17,6 @@ public class CelestiniApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        //Enable the Parse DataStore
-        // Power your app with Local Datastore. For more info, go to
-        // https://parse.com/docs/android/guide#local-datastore
-        Parse.enableLocalDatastore(this);
 
         //Register Parse classes here
         ParseObject.registerSubclass(ClientContactInformation.class);
