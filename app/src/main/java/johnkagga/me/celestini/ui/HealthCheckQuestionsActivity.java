@@ -1,6 +1,7 @@
 package johnkagga.me.celestini.ui;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -9,12 +10,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Toast;
-
-import com.parse.GetCallback;
-import com.parse.ParseException;
-import com.parse.ParseQuery;
-import com.parse.SaveCallback;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -23,18 +18,18 @@ import java.util.Date;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import johnkagga.me.celestini.R;
+import johnkagga.me.celestini.provider.newvisit.NewvisitContentValues;
 import johnkagga.me.celestini.utilites.Constants;
 import johnkagga.me.celestini.utilites.Helper;
-import johnkagga.me.celestini.R;
-import johnkagga.me.celestini.data.ClientContactInformation;
-import johnkagga.me.celestini.data.HealthCheckQuestions;
 
 public class HealthCheckQuestionsActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = HealthCheckQuestionsActivity.class.getSimpleName();
-    private String clientId;
-    private ClientContactInformation mContactInformation;
-    private HealthCheckQuestions mHealthCheckQuestions;
+    private static final String YES = "yes";
+    private static final String NO = "no";
+    private String uriString;
+    private Uri mClientUri;
 
     @Bind(R.id.fab)
     FloatingActionButton fab;
@@ -75,11 +70,31 @@ public class HealthCheckQuestionsActivity extends AppCompatActivity {
     @Bind(R.id.pre_sisters_cb)
     CheckBox mSisterPre;
 
-    @Bind(R.id.menstral_date)EditText mMensturalDate;
+    @Bind(R.id.menstral_date)
+    EditText mMensturalDate;
 
     ArrayList<String> mDiseases = null;
     ArrayList<String> mDrugs = null;
     ArrayList<String> mPreeclampia = null;
+
+    private String otherDrugs;
+    private String Headache;
+    private String Epigastric;
+    private String Nause;
+    private String Fever;
+    private String Vomiting;
+    private String VisualDis;
+    private String SisterPre;
+    private String ChestPain;
+    private String DiffInBreath;
+    private String Vaginal;
+    private String HyperDrugs;
+    private String IronTabs;
+    private String Diabetes;
+    private String Folic;
+    private String MotherPre;
+
+    private NewvisitContentValues values;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +107,7 @@ public class HealthCheckQuestionsActivity extends AppCompatActivity {
         mDiseases = new ArrayList<>();
         mDrugs = new ArrayList<>();
         mPreeclampia = new ArrayList<>();
+        values = new NewvisitContentValues();
 
         saveDataInLocalDataStore();
 
@@ -106,13 +122,13 @@ public class HealthCheckQuestionsActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mHealthCheckQuestions = new HealthCheckQuestions();
 
                 //Formatting the date
                 DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                 formatter.setLenient(false);
                 Date mensurationDate = new Date();
                 String date_to_format = "";
+
                 try {
                     date_to_format = mMensturalDate.getText().toString().trim();
                     mensurationDate = formatter.parse(date_to_format);
@@ -120,27 +136,45 @@ public class HealthCheckQuestionsActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                mHealthCheckQuestions.setUuidString();
-                mHealthCheckQuestions.setDiseases(mDiseases);
-                mHealthCheckQuestions.setDrugs(mDrugs);
-                mHealthCheckQuestions.setPreeclampsia(mPreeclampia);
-                mHealthCheckQuestions.setMensurationDate(mensurationDate);
-                mHealthCheckQuestions.pinInBackground(Constants.INFO_SAVE_LABEL, new SaveCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        if (e == null) {
-                            //Save was successful
-                            //Query for Client information object and add
-                            //the mHealthCheckQuestions object.
-                            queryDataStoreAndSetRelation();
-                        } else {
-                            //Error occurred while saving
-                            Helper.makeToast(HealthCheckQuestionsActivity.this,
-                                    "An error occurred while saving HCQs");
-                        }
-                    }
-                });
+                //Add data to the local db
+                values.putLastNormalMpDate(date_to_format)
+                        .putPreeclampsiaFamilyHistory(mPreeclampia.toString());
+                if (otherDrugs != null) {
+                    values.putOtherDrugs(otherDrugs);
+                }
+                values.putChestPain(ChestPain)
+                        .putHeadacheSymptome(Headache)
+                        .putEpigastricPain(Epigastric)
+                        .putNauseaAndVomiting(Nause)//TODO add nause and vomit
+                        .putVisualDisturbance(VisualDis)
+                        .putPreeclampsiaFamilyHistory(MotherPre)//TODO change mother n sister to PreceHis
+                        .putDifficultyInBreathing(DiffInBreath)
+                        .putVaginalBleeding(Vaginal)
+                        .putHypertensionBeforePregnancy(HyperDrugs)
+                        .putIronTablets(IronTabs)
+                        .putDiabetesDrugs(Diabetes)
+                        .putFolicAcidTablets(Folic);
+
+                Intent intent = getIntent();
+                if (intent != null && intent.hasExtra(Constants.CLIENT_URI)) {
+
+                    uriString = intent.getStringExtra(Constants.CLIENT_URI);
+
+                    mClientUri = Uri.parse(uriString);
+
+                    Log.v(LOG_TAG, "Uri: " + mClientUri.toString());
+                    //Number of rows updated
+                    int rowsUpdated = 0;
+                    rowsUpdated = HealthCheckQuestionsActivity.this
+                            .getContentResolver()
+                            .update(mClientUri, values.values(), null, null);
+                    Log.v(LOG_TAG, "Number of rows updated" + rowsUpdated);
+
+                    Helper.makeToast(HealthCheckQuestionsActivity.this, "Saved successfully");
+                    startStructuredActivity();
+                }
             }
+
         });
     }
 
@@ -154,6 +188,7 @@ public class HealthCheckQuestionsActivity extends AppCompatActivity {
     public void otherCheckBoxClicked(View view) {
         if (mOtherCb.isChecked()) {
             mOtherDrugs.setEnabled(true);
+            otherDrugs = mOtherDrugs.getText().toString();
         } else {
             mOtherDrugs.setEnabled(false);
         }
@@ -174,10 +209,10 @@ public class HealthCheckQuestionsActivity extends AppCompatActivity {
             case R.id.headache_cb:
                 String headache = mHeadache.getText().toString();
                 if (checked) {
-                    mDiseases.add(headache); //Add headache to the list
+                    Headache = YES; //Add headache to the list
                     Log.v(LOG_TAG, "Added " + headache);
                 } else {
-                    mDiseases.remove(headache); //Remove headache from the list
+                    Headache = NO; //Remove headache from the list
                     Log.v(LOG_TAG, "Removed " + headache);
                 }
                 break;
@@ -185,167 +220,128 @@ public class HealthCheckQuestionsActivity extends AppCompatActivity {
             case R.id.epigastric_cb:
                 String epigastric = mEpigastric.getText().toString();
                 if (checked) {
-                    mDiseases.add(epigastric);
+                    Epigastric = YES;
                 } else {
-                    mDiseases.remove(epigastric);
+                    Epigastric = NO;
                 }
                 break;
 
             case R.id.nausea_cb:
                 String nausea = mNause.getText().toString();
                 if (checked) {
-                    mDiseases.add(nausea);
+                    Nause = YES;
                 } else {
-                    mDiseases.remove(nausea);
+                    Nause = NO;
                 }
                 break;
 
             case R.id.fever_cb:
                 String fever = mFever.getText().toString();
                 if (checked) {
-                    mDiseases.add(fever);
+                    Fever = YES;
                 } else {
-                    mDiseases.remove(fever);
+                    Fever = NO;
                 }
                 break;
 
             case R.id.vomitin_cb:
                 String vomit = mVomiting.getText().toString();
                 if (checked) {
-                    mDiseases.add(vomit);
+                    Vomiting = YES;
                 } else {
-                    mDiseases.remove(vomit);
+                    Vomiting = NO;
                 }
                 break;
 
             case R.id.visual_disturbances_cb:
                 String visual = mVisualDis.getText().toString();
                 if (checked) {
-                    mDiseases.add(visual);
+                    VisualDis = YES;
                 } else {
-                    mDiseases.remove(visual);
+                    VisualDis = NO;
                 }
                 break;
 
             case R.id.chest_pain_cb:
                 String chest = mChestPain.getText().toString();
                 if (checked) {
-                    mDiseases.add(chest);
+                    ChestPain = YES;
                 } else {
-                    mDiseases.remove(chest);
+                    ChestPain = NO;
                 }
                 break;
 
             case R.id.diff_breathing_cb:
                 String breath = mDiffInBreath.getText().toString();
                 if (checked) {
-                    mDiseases.add(breath);
+                    DiffInBreath = YES;
                 } else {
-                    mDiseases.remove(breath);
+                    DiffInBreath = NO;
                 }
                 break;
 
             case R.id.vaginal_cb:
                 String vaginal = mVaginal.getText().toString();
                 if (checked) {
-                    mDiseases.add(vaginal);
+                    Vaginal = YES;
                 } else {
-                    mDiseases.remove(vaginal);
+                    Vaginal = NO;
                 }
                 break;
             //Setting the Drugs
             case R.id.hypertension_drugs_cb:
                 String hyper = mHyperDrugs.getText().toString();
                 if (checked) {
-                    mDrugs.add(hyper);
+                    HyperDrugs = YES;
                 } else {
-                    mDrugs.remove(hyper);
+                    HyperDrugs = NO;
                 }
                 break;
 
             case R.id.iron_tablets_cb:
                 String iron = mIronTabs.getText().toString();
                 if (checked) {
-                    mDrugs.add(iron);
+                    IronTabs = YES;
                 } else {
-                    mDrugs.remove(iron);
+                    IronTabs = NO;
                 }
                 break;
 
             case R.id.diabetes_drugs_cb:
                 String diabetes = mDiabetes.getText().toString();
                 if (checked) {
-                    mDrugs.add(diabetes);
+                    Diabetes = YES;
                 } else {
-                    mDrugs.remove(diabetes);
+                    Diabetes = NO;
                 }
                 break;
 
             case R.id.folic_acid_tablets_cb:
                 String folic = mFolic.getText().toString();
                 if (checked) {
-                    mDrugs.add(folic);
+                    Folic = YES;
                 } else {
-                    mDrugs.remove(folic);
+                    Folic = NO;
                 }
                 break;
             //Set preeclampsia
             case R.id.pre_mother_cb:
                 String mother = mMotherPre.getText().toString();
                 if (checked) {
-                    mPreeclampia.add(mother);
+                    MotherPre = YES;
                 } else {
-                    mPreeclampia.remove(mother);
+                    MotherPre = NO;
                 }
                 break;
 
             case R.id.pre_sisters_cb:
                 String sisters = mSisterPre.getText().toString();
                 if (checked) {
-                    mPreeclampia.add(sisters);
+                    SisterPre = YES;
                 } else {
-                    mPreeclampia.remove(sisters);
+                    SisterPre = NO;
                 }
                 break;
-        }
-    }
-
-    /**
-     * This method receives a Uuid of the Client Information from the incoming Intent
-     * and queries for the object from the data store. After the Health Object
-     * is saved into the Client Information Object as a Parse relation
-     * Pointer.
-     */
-    private void queryDataStoreAndSetRelation() {
-        final Intent intent = getIntent();
-
-        if (intent != null && intent.hasExtra(Constants.CLIENT_CONTACT_INFO_ID)) {
-            clientId = intent.getStringExtra(Constants.CLIENT_CONTACT_INFO_ID);
-            Log.v(LOG_TAG, "Client Id: " + clientId);
-            //Query for the ClientInformation Object and save the Health Object to it.
-            ParseQuery<ClientContactInformation> query = ClientContactInformation.getQuery();
-            query.fromLocalDatastore();
-            query.whereEqualTo(Constants.UUID_FIELD, clientId);
-            query.getFirstInBackground(new GetCallback<ClientContactInformation>() {
-                @Override
-                public void done(ClientContactInformation clientInfo, ParseException e) {
-                    if (e == null) {
-                        //Attach the Health Object to the returned Client Object
-                        //and start an intent when done.
-                        mContactInformation = clientInfo;
-                        mContactInformation.setHealthCheckInformation(mHealthCheckQuestions);
-                        //start the structured activity
-                        startStructuredActivity();
-                    } else {
-                        //There was a problem getting the object
-                        Log.e(LOG_TAG, e.getMessage());
-                    }
-                }
-            });
-        } else {
-            Toast.makeText(HealthCheckQuestionsActivity.this,
-                    "Error getting the Reference Client Object Uuid", Toast.LENGTH_LONG)
-                    .show();
         }
     }
 
@@ -355,7 +351,7 @@ public class HealthCheckQuestionsActivity extends AppCompatActivity {
     private void startStructuredActivity() {
         Intent structureIntent = new Intent(HealthCheckQuestionsActivity.this,
                 StructuredQuestionsActivity.class);
-        structureIntent.putExtra(Constants.CLIENT_CONTACT_INFO_ID, clientId);
+        structureIntent.putExtra(Constants.CLIENT_URI, mClientUri.toString());
         startActivity(structureIntent);
     }
 

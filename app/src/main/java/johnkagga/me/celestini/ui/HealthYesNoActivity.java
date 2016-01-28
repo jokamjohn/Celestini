@@ -1,6 +1,7 @@
 package johnkagga.me.celestini.ui;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -9,18 +10,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Toast;
-
-import com.parse.GetCallback;
-import com.parse.ParseException;
-import com.parse.ParseQuery;
-import com.parse.SaveCallback;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import johnkagga.me.celestini.R;
-import johnkagga.me.celestini.data.ClientContactInformation;
-import johnkagga.me.celestini.data.HealthYesNoQuestions;
+import johnkagga.me.celestini.provider.newvisit.NewvisitContentValues;
 import johnkagga.me.celestini.utilites.Constants;
 import johnkagga.me.celestini.utilites.Helper;
 
@@ -68,10 +62,10 @@ public class HealthYesNoActivity extends AppCompatActivity {
     private RadioButton mGestationButton;
     private RadioButton mGestationOption;
 
-    private HealthYesNoQuestions mHealthYesNoQuestions;
-    private ClientContactInformation mContactInformation;
+    private NewvisitContentValues mValues;
 
-    private String clientId;
+    private String uriString;
+    private Uri mClientUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,8 +75,8 @@ public class HealthYesNoActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         ButterKnife.bind(this);
 
-        //Initialize the Question Object
-        mHealthYesNoQuestions = new HealthYesNoQuestions();
+        //Initialize the Values
+        mValues = new NewvisitContentValues();
 
         setTheFab();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -96,7 +90,8 @@ public class HealthYesNoActivity extends AppCompatActivity {
     private void setTheFab() {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
+
                 //Get the id of the selected radio button from the Radio Group
                 //find the radio button by the selected id
                 int hyperHistoryId = mHyperHistoryGroup.getCheckedRadioButtonId();
@@ -131,11 +126,7 @@ public class HealthYesNoActivity extends AppCompatActivity {
                     String choice = mGestationOption.getText().toString();
                     Log.v(LOG_TAG, "Gestation choice: " + choice);
 
-                    mHealthYesNoQuestions.setGestation(choice);
-                }
-                else {
-                    mHealthYesNoQuestions.setGestation("None");
-                    //TODO check out this option whether it works.
+                    //TODO remove this section
                 }
 
                 //Getting the text from the selected options
@@ -148,47 +139,31 @@ public class HealthYesNoActivity extends AppCompatActivity {
                 String hyperBeforeAns = mHyperBefore.getText().toString();
                 String gestationAns = mGestationButton.getText().toString();
 
-                //Save the Parse object
-                mHealthYesNoQuestions.setUuidString();
-                mHealthYesNoQuestions.setHistoryHypertension(hyperHistoryAns);
-                mHealthYesNoQuestions.setCesarean(cesareanAns);
-                mHealthYesNoQuestions.setDiabetic(diabeticsAns);
-                mHealthYesNoQuestions.setChronicRenal(chronicAns);
-                mHealthYesNoQuestions.setThyroid(thyroidAns);
-                mHealthYesNoQuestions.setSickleCell(sickleCellAns);
-                mHealthYesNoQuestions.setHypertensive(hyperBeforeAns);
-                mHealthYesNoQuestions.setMultipleGestation(gestationAns);
+                //Save to local db.
+                mValues.putHypertensionBeforePregnancy(hyperBeforeAns)
+                        .putPreviousCaesarean(cesareanAns)
+                        .putDiabeticBeforePregnancy(diabeticsAns)
+                        .putChronicRenalDisease(chronicAns)
+                        .putSickleCells(sickleCellAns)
+                        .putThyroidDisease(thyroidAns)
+                        .putHypertensionHistoryCocs(hyperHistoryAns)
+                        .putMultipleGestation(gestationAns);
 
-                mHealthYesNoQuestions.pinInBackground(Constants.INFO_SAVE_LABEL, new SaveCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        if (e == null) {
-                            //Saving was successful
-                            getIntentAndSetHealthInfo();
-                        } else {
-                            //There was a problem saving
-                            //TODO Add AlertDialog to enable the user to try again
-                        }
-                    }
-                });
+                Intent intent = getIntent();
+                if (intent != null && intent.hasExtra(Constants.CLIENT_URI)) {
+                    uriString = intent.getStringExtra(Constants.CLIENT_URI);
+                    mClientUri = Uri.parse(uriString);
 
-                Helper.makeToast(HealthYesNoActivity.this, mHyperButton.getText().toString());
+                    int rowsUpdated = 0;
+                    rowsUpdated = HealthYesNoActivity.this.getContentResolver()
+                            .update(mClientUri, mValues.values(), null, null);
+                    Log.v(LOG_TAG, "YesNo updated rows " + rowsUpdated);
+                    Helper.makeToast(HealthYesNoActivity.this, "Saved data");
+
+                    startHealthYesNoActivity();
+                }
             }
         });
-    }
-
-    /**
-     * This method enables the Gestation options
-     *
-     * @param view View
-     */
-    public void setGestationOptions(View view) {
-        boolean checked = ((RadioButton) view).isChecked();
-        if (checked) {
-            mTwins.setEnabled(true);
-            mTriplets.setEnabled(true);
-            mOther.setEnabled(true);
-        }
     }
 
     /**
@@ -206,52 +181,23 @@ public class HealthYesNoActivity extends AppCompatActivity {
     }
 
     /**
-     * This method receives a Uuid of the Client Information from the incoming Intent
-     * and queries for the object from the data store. After the Health Object
-     * is saved into the Client Information Object as a Parse relation
-     * Pointer.
-     */
-    private void getIntentAndSetHealthInfo() {
-        Intent intent = getIntent();
-
-        if (intent != null && intent.hasExtra(Constants.CLIENT_CONTACT_INFO_ID)) {
-            clientId = intent.getStringExtra(Constants.CLIENT_CONTACT_INFO_ID);
-            Log.v(LOG_TAG, "Client Id: " + clientId);
-            //Query for the ClientInformation Object and save the Health Object to it.
-            ParseQuery<ClientContactInformation> query = ClientContactInformation.getQuery();
-            query.fromLocalDatastore();
-            query.whereEqualTo(Constants.UUID_FIELD, clientId);
-            query.getFirstInBackground(new GetCallback<ClientContactInformation>() {
-                @Override
-                public void done(ClientContactInformation clientInfo, ParseException e) {
-                    if (e == null) {
-                        //Attach the Health Object to the returned Client Object
-                        //and start an intent when done.
-                        mContactInformation = clientInfo;
-                        mContactInformation.setHealthInfo(mHealthYesNoQuestions);
-                        startHealthYesNoActivity();
-                    } else {
-                        //There was a problem getting the object
-                        Log.e(LOG_TAG, e.getMessage());
-                    }
-                }
-            });
-        } else {
-            Toast.makeText(HealthYesNoActivity.this,
-                    "Error getting the Reference Client Object Uuid", Toast.LENGTH_LONG)
-                    .show();
-        }
-    }
-
-    /**
      * This method makes an Intent to the Health Question Activity, it also sets
-     * the intent extra to the clientId of the Client Information Activity
+     * the intent extra to the uriString of the Client Information Activity
      * and also add Flags so that the user does not go back to the
      * previous activity but rather the Main Activity.
      */
     private void startHealthYesNoActivity() {
-        Intent checkIntent = new Intent(this, HealthCheckQuestionsActivity.class);
-        checkIntent.putExtra(Constants.CLIENT_CONTACT_INFO_ID, clientId);
+        Intent checkIntent = new Intent(HealthYesNoActivity.this, HealthCheckQuestionsActivity.class);
+        checkIntent.putExtra(Constants.CLIENT_URI, uriString);
         startActivity(checkIntent);
+    }
+
+    public void setGestationOptions(View view) {
+        boolean checked = ((RadioButton) view).isChecked();
+        if (checked) {
+            mTwins.setEnabled(true);
+            mTriplets.setEnabled(true);
+            mOther.setEnabled(true);
+        }
     }
 }

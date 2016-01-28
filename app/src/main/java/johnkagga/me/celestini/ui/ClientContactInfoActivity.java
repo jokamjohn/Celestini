@@ -1,6 +1,7 @@
 package johnkagga.me.celestini.ui;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -11,24 +12,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
-import com.parse.ParseGeoPoint;
-import com.parse.ParseUser;
-import com.parse.SaveCallback;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
+import johnkagga.me.celestini.R;
+import johnkagga.me.celestini.provider.newvisit.NewvisitColumns;
+import johnkagga.me.celestini.provider.newvisit.NewvisitContentValues;
 import johnkagga.me.celestini.utilites.Constants;
 import johnkagga.me.celestini.utilites.Helper;
-import johnkagga.me.celestini.R;
-import johnkagga.me.celestini.data.ClientContactInformation;
 
 public class ClientContactInfoActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = ClientContactInfoActivity.class.getSimpleName();
-    private String clientId;
 
     private EditText mFirstName;
     private EditText mLastName;
@@ -41,6 +39,8 @@ public class ClientContactInfoActivity extends AppCompatActivity {
     private EditText mDistrict;
     private EditText mLatitude;
     private EditText mLongitude;
+
+    private Uri mClientUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,9 +57,12 @@ public class ClientContactInfoActivity extends AppCompatActivity {
             @Override
             public void onClick(final View view) {
 
+                UUID uuid = UUID.randomUUID();
+                final String tag = uuid.toString();
                 //Get the user input data
                 final String firstName = mFirstName.getText().toString().trim();
                 final String lastName = mLastName.getText().toString().trim();
+                final String patientName = firstName + " " + lastName;
                 final String phoneNumber = mPhoneNumber.getText().toString().trim();
                 final String altPhoneNumber = mAltPhoneNumber.getText().toString().trim();
                 final String tribe = mTribe.getText().toString().trim();
@@ -89,48 +92,27 @@ public class ClientContactInfoActivity extends AppCompatActivity {
                             "Try Again", "Please enter the First and Last name and Date");
                 } else {
 
-                    final ClientContactInformation contactInformation = new ClientContactInformation();
-                    contactInformation.setUuidString();
-                    contactInformation.setFirstName(firstName);
-                    contactInformation.setLastName(lastName);
-                    contactInformation.setPhoneNumber(phoneNumber);
-                    contactInformation.setAltPhoneNumber(altPhoneNumber);
-                    contactInformation.setDateOfBirth(finalDateOfBirth);
-                    contactInformation.setTribe(tribe);
-                    contactInformation.setOccupation(occupation);
-                    contactInformation.setVillage(village);
-                    contactInformation.setDistrict(district);
+                    NewvisitContentValues values = new NewvisitContentValues();
+                    values.putPatientName(patientName)
+                            .putHomeDistrict(district)
+                            .putDob(finalDateOfBirth)
+                            .putTribe(tribe)
+                            .putOccupation(occupation)
+                            .putTown(village);
+
+                    mClientUri = ClientContactInfoActivity.this
+                            .getContentResolver()
+                            .insert(NewvisitColumns.CONTENT_URI, values.values());
+
                     if (lat.isEmpty() || log.isEmpty()) {
                         //latitude and Longitude not set
                         Log.v(LOG_TAG, "No Geopoints");
                     } else {
                         double latitude = Double.parseDouble(lat);
                         double longitude = Double.parseDouble(log);
-                        ParseGeoPoint geoPoint = new ParseGeoPoint(latitude, longitude);
-                        contactInformation.setGeoPoint(geoPoint);
                     }
-                    contactInformation.setSync(false);
-                    contactInformation.setCreatedBy(ParseUser.getCurrentUser());
-                    //Pin in the Parse LocalDataStore
-                    contactInformation.pinInBackground(Constants.INFO_SAVE_LABEL, new SaveCallback() {
-                        @Override
-                        public void done(com.parse.ParseException e) {
-                            if (e == null) {
 
-                                //If no error get the Uuid
-                                clientId = contactInformation.getUuidString();
-                                Log.v(LOG_TAG, "clientId" + clientId);
-
-                                Helper.makeToast(ClientContactInfoActivity.this,
-                                        "Client Info saved successfully");
-
-                                startHealthYNActivity();
-                            } else {
-                                Helper.makeToast(ClientContactInfoActivity.this,
-                                        "Error saving the data try again");
-                            }
-                        }
-                    });
+                    startHealthYNActivity();
                 }
             }
         });
@@ -144,7 +126,7 @@ public class ClientContactInfoActivity extends AppCompatActivity {
     private void startHealthYNActivity() {
         Intent intent = new Intent(ClientContactInfoActivity.this,
                 HealthYesNoActivity.class);
-        intent.putExtra(Constants.CLIENT_CONTACT_INFO_ID, clientId);
+        intent.putExtra(Constants.CLIENT_URI,mClientUri.toString());
         startActivity(intent);
     }
 

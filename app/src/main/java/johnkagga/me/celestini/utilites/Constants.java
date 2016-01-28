@@ -5,6 +5,7 @@ package johnkagga.me.celestini.utilites;
  */
 public final class Constants {
 
+
     //Parse class constants
 
     //Parse field constants
@@ -15,6 +16,7 @@ public final class Constants {
 
     //Application constants
     public static final String CLIENT_CONTACT_INFO_ID = "ID";
+    public static final String CLIENT_URI = "ClientUri";
 
 
 }
