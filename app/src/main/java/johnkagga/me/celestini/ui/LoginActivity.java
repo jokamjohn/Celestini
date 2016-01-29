@@ -50,7 +50,7 @@ public class LoginActivity extends AppCompatActivity {
                     //Dialog
                     mUsername.setError("Enter Username");
                     mPassword.setError("Enter a Password");
-//                    Helper.alertDialog(LoginActivity.this, title, message);
+
                 } else {
                     //Login user
                     //make progress bar visible
@@ -69,19 +69,16 @@ public class LoginActivity extends AppCompatActivity {
                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     startActivity(intent);
                                 } else {
-                                    String title = "Login Error";
 
                                     mUsername.setError("Enter a correct Username");
                                     mPassword.setError("Enter a correct Password");
 
-//                                    String message = e.getMessage();
-//
-//                                    Helper.alertDialog(LoginActivity.this, title, message);
+                                    //TODO Implement the signIn logic.
                                 }
                             }
                         });
-                    }else {
-                        Helper.alertDialog(LoginActivity.this,"Network","No internet connection");
+                    } else {
+                        Helper.alertDialog(LoginActivity.this, "Network", "No internet connection");
                     }
                 }
             }

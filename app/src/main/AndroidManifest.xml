@@ -77,15 +77,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="johnkagga.me.celestini.ui.MainActivity"/>
         </activity>
-        <activity
-            android:name=".ui.SyncActivity"
-            android:label="@string/title_activity_sync"
-            android:parentActivityName=".ui.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="johnkagga.me.celestini.ui.MainActivity"/>
-        </activity>
 
         <provider
             android:name="johnkagga.me.celestini.provider.CelestiniProvider"
