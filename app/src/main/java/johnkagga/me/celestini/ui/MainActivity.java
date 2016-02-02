@@ -132,9 +132,6 @@ public class MainActivity extends AppCompatActivity {
                 startLoginActivity();
                 break;
 
-            case R.id.action_sync:
-                syncData();
-                break;
         }
 
         return super.onOptionsItemSelected(item);

@@ -14,11 +14,5 @@
         android:title="@string/log_out"
         app:showAsAction="never"/>
 
-    <item
-        android:id="@+id/action_sync"
-        android:icon="@drawable/ic_sync_white_36dp"
-        android:title="sync"
-        android:orderInCategory="98"
-        app:showAsAction="always"/>
 
 </menu>
