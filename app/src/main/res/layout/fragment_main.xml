@@ -33,9 +33,5 @@
         android:layout_marginBottom="16dp"
         android:layout_gravity="center_horizontal"/>
 
-    <Button
-        style="@style/Buttons"
-        android:text="Sync"
-        android:id="@+id/sync"
-        android:layout_gravity="center_horizontal"/>
+
 </LinearLayout>
