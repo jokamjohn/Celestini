@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,8 +36,6 @@ public class ClientContactInfoActivity extends AppCompatActivity {
     private EditText mOccupation;
     private EditText mVillage;
     private EditText mDistrict;
-    private EditText mLatitude;
-    private EditText mLongitude;
 
     private Uri mClientUri;
 
@@ -69,8 +66,7 @@ public class ClientContactInfoActivity extends AppCompatActivity {
                 final String occupation = mOccupation.getText().toString().trim();
                 final String village = mVillage.getText().toString().trim();
                 final String district = mDistrict.getText().toString().trim();
-                String lat = mLatitude.getText().toString().trim();
-                String log = mLongitude.getText().toString().trim();
+
                 //Formatting the date
                 DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                 formatter.setLenient(false);
@@ -104,13 +100,6 @@ public class ClientContactInfoActivity extends AppCompatActivity {
                             .getContentResolver()
                             .insert(NewvisitColumns.CONTENT_URI, values.values());
 
-                    if (lat.isEmpty() || log.isEmpty()) {
-                        //latitude and Longitude not set
-                        Log.v(LOG_TAG, "No Geopoints");
-                    } else {
-                        double latitude = Double.parseDouble(lat);
-                        double longitude = Double.parseDouble(log);
-                    }
 
                     startHealthYNActivity();
                 }
@@ -143,9 +132,6 @@ public class ClientContactInfoActivity extends AppCompatActivity {
         mOccupation = (EditText) findViewById(R.id.occupation);
         mVillage = (EditText) findViewById(R.id.village);
         mDistrict = (EditText) findViewById(R.id.district);
-        mLatitude = (EditText) findViewById(R.id.latitude);
-        mLongitude = (EditText) findViewById(R.id.longitude);
-
     }
 
 
